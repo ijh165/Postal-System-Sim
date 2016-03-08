@@ -105,7 +105,7 @@ public class Logging {
 	}
 
 	public static void briberyDetected(LogType type, Deliverable d) {
-		String src = d.getDestOffice().getName();
+		String src = d.getIniatingOffice().getName();
 		PrintWriter w = getWriter(type, src);
 		if (w != null) {
             w.println("- Something funny going on... -");

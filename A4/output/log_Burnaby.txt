@@ -1,21 +1,6 @@
-- New package -
-Source: Burnaby
-Destination: Beijing
-- Rejected package -
-Source: Burnaby
-- New package -
-Source: Burnaby
-Destination: Vancouver
-- Rejected package -
-Source: Burnaby
-- New package -
-Source: Burnaby
-Destination: Vancouver
-- Rejected package -
-Source: Burnaby
-- New package -
-Source: Burnaby
-Destination: Vancouver
-- Rejected package -
-Source: Burnaby
 - - DAY 1 OVER - -
+- - DAY 2 OVER - -
+- Standard transit arrival -
+- Incinerated package -
+Destroyed at: Burnaby
+- - DAY 3 OVER - -
