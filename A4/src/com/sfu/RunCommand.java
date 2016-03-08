@@ -18,7 +18,7 @@ public class RunCommand {
 
 	private static Office getOffice(String officeName) {
 		for (Office o : offices) {
-			if (o.getName() == officeName) {
+			if (o.getName().equals(officeName)) {
 				return o;
 			}
 		}
@@ -118,7 +118,7 @@ public class RunCommand {
 
 		while (idx < commands.size() || hasPendingDeliverables) {
 			//my shit
-			System.out.println(idx);
+			/*System.out.println(idx);*/
 			//end of my shit
 
 			//Start of the day, check if any in transit items have arrived
@@ -190,7 +190,7 @@ public class RunCommand {
 
 					boolean hasCriminalRecipient = wanted.contains(pkg.getRecipient());
 					boolean officeFull = srcOffice.isFull();
-					boolean lengthFitSrc = (length > srcOffice.getMaxPackageLength());
+					boolean lengthFitSrc = (length < srcOffice.getMaxPackageLength());
 
 					if (!hasCriminalRecipient && !officeFull
 							&& lengthFitSrc && destOffice != null && (length <= destOffice.getMaxPackageLength())) {

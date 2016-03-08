@@ -17,12 +17,12 @@ public class Network {
 	}
 
 	public void checkAndDeliver(int day) {
-		for (int idx = deliverablesInTransit.size() -1 ; idx >= 0 ; idx--) {
+		for (int idx = deliverablesInTransit.size()-1 ; idx >= 0 ; idx--) {
 			Deliverable d = deliverablesInTransit.get(idx);
 			Office initOffice = d.getIniatingOffice();
 			if (d.getInitDay() + initOffice.getTransitTime() + 2 >= day) {
 				Office destOffice = d.getDestOffice();
-				Logging.transitArrived(LogType.MASTER, d);
+				Logging.transitArrived(LogType.OFFICE, d);
 				deliverablesInTransit.remove(idx);
 				//put the deliverable into this office
 				destOffice.receiveFromNetwork(d);
