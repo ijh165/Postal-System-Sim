@@ -5,8 +5,8 @@ Destination: Vancouver
 Destination: Vancouver
 - Standard transit departure -
 - - DAY 1 OVER - -
-- Standard transit arrival -
 - - DAY 2 OVER - -
+- Standard transit arrival -
 - Delivery process complete -
-Delivery took 2 days
+Delivery took 3 days
 - - DAY 3 OVER - -

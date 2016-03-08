@@ -20,7 +20,7 @@ public class Network {
 		for (int idx = deliverablesInTransit.size()-1 ; idx >= 0 ; idx--) {
 			Deliverable d = deliverablesInTransit.get(idx);
 			Office initOffice = d.getIniatingOffice();
-			if (d.getInitDay() + initOffice.getTransitTime() + 2 >= day) {
+			if (day >= d.getInitDay() + initOffice.getTransitTime() + 1) {
 				Office destOffice = d.getDestOffice();
 				Logging.transitArrived(LogType.OFFICE, d);
 				deliverablesInTransit.remove(idx);

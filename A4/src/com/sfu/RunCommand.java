@@ -117,10 +117,6 @@ public class RunCommand {
 		boolean hasPendingDeliverables = hasPendingDeliverables();
 
 		while (idx < commands.size() || hasPendingDeliverables) {
-			//my shit
-			/*System.out.println(idx);*/
-			//end of my shit
-
 			//Start of the day, check if any in transit items have arrived
 			network.checkAndDeliver(day);
 
