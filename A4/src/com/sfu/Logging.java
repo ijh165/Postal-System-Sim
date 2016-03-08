@@ -64,7 +64,7 @@ public class Logging {
 
 	public static void rejectDeliverable(LogType type, Deliverable d) {
 		String src = d.getIniatingOffice().getName();
-		String dest = d.getDestOffice() != null ? d.getIntendedDest() : d.getDestOffice().getName();
+		String dest = d.getDestOffice() == null ? d.getIntendedDest() : d.getDestOffice().getName();
 		  
 		PrintWriter w = getWriter(type, src);
 		if (w != null) {
@@ -73,7 +73,7 @@ public class Logging {
 			} else {
 				w.println("- Rejected package -");
 			}
-			w.println("Source: " + dest);
+			w.println("Source: " + src);
 		}
 	}
 

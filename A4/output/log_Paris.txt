@@ -1,0 +1,6 @@
+- New package -
+Source: Paris
+Destination: Burnaby
+- Rejected package -
+Source: Paris
+- - DAY 1 OVER - -

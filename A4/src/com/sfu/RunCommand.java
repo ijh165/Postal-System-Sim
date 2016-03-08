@@ -186,15 +186,22 @@ public class RunCommand {
 
 					boolean hasCriminalRecipient = wanted.contains(pkg.getRecipient());
 					boolean officeFull = srcOffice.isFull();
-					boolean lengthFitSrc = (length < srcOffice.getMaxPackageLength());
+					boolean lengthFitSrc = (length <= srcOffice.getMaxPackageLength());
+					boolean postageCovered = pkg.getMoney()>=srcOffice.getRequiredPostage();
 
-					if (!hasCriminalRecipient && !officeFull
-							&& lengthFitSrc && destOffice != null && (length <= destOffice.getMaxPackageLength())) {
+					if (!hasCriminalRecipient && !officeFull &&
+						postageCovered && lengthFitSrc &&
+						destOffice != null && (length <= destOffice.getMaxPackageLength()))
+					{
 						srcOffice.accept(pkg);
-					} else if (pkg.getMoney() >= (srcOffice.getRequiredPostage() + srcOffice.getPersuasionAmount())) {
+					}
+					else if (pkg.getMoney() >= (srcOffice.getRequiredPostage() + srcOffice.getPersuasionAmount()))
+					{
 						Logging.briberyDetected(LogType.MASTER, pkg);
 						srcOffice.accept(pkg);
-					} else {
+					}
+					else
+					{
 						Logging.rejectDeliverable(LogType.MASTER, pkg);
 						Logging.rejectDeliverable(LogType.OFFICE, pkg);
 					}
