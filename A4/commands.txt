@@ -1,5 +1,8 @@
-4
-PACKAGE Vancouver Tim Burnaby 20000 6000
+7
+LETTER Vancouver Bill Burnaby Tim
+PACKAGE Burnaby Tim Vancouver 100 1000
+DAY
+DAY
 DAY
 DAY
 DAY

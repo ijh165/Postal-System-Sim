@@ -114,9 +114,11 @@ public class Office {
 
 	//Remove deliverables to be picked up longer than 14 days (MY SHIT)
 	public void drop(int day) {
-		for (Deliverable d : toPickUp) {
+		for (int idx = 0; idx < toPickUp.size(); idx++) {
+			Deliverable d = toPickUp.get(idx);
 			if (day-d.getArrivalDay()>14) {
 				toPickUp.remove(d);
+				idx = -1;
 			}
 		}
 	}
