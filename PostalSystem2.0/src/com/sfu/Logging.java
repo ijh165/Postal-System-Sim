@@ -64,7 +64,7 @@ public class Logging {
 
 	public static void rejectDeliverable(LogType type, Deliverable d) {
 		String src = d.getIniatingOffice().getName();
-		String dest = d.getDestOffice() == null ? d.getIntendedDest() : d.getDestOffice().getName();
+		/*String dest = d.getDestOffice() == null ? d.getIntendedDest() : d.getDestOffice().getName();*/
 		  
 		PrintWriter w = getWriter(type, src);
 		if (w != null) {
@@ -136,12 +136,20 @@ public class Logging {
 		}
 	}
 
-	public static void criminalApprehended(LogType type, String criminalName, String office) {
+	public static void criminalApprehended(LogType type, String criminalName, String officeName) {
 		PrintWriter w = getWriter(type, null);
 		if (w != null) {
             w.println("- Criminal apprehended -");
-            w.println("Criminal name: " + criminalName + ", at office: " + office);
+            w.println("Criminal name: " + criminalName + ", at office: " + officeName);
 		}
+	}
+
+	public static void officeDestroyed(LogType type, String officeName) {
+		PrintWriter w = getWriter(type, officeName);
+		if(w != null) {
+			w.println("- " + officeName + " OFFICE DESTROYED -");
+		}
+		/*officeWriterMap.remove(officeName);*/
 	}
 
 	public static void cleanUp() {

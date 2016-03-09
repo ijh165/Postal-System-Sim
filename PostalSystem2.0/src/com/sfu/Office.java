@@ -169,15 +169,17 @@ public class Office {
 	}
 
 	//Pickup a deliverable
-	public void pickUp(String recipient, int day) {
+	public Deliverable pickUp(String recipient, int day) {
 		int size = toPickUp.size();
 		for (int idx = size-1 ; idx >= 0 ; idx--) {
 			Deliverable d = toPickUp.get(idx);
 			if (recipient.equals(d.getRecipient())) {
 				toPickUp.remove(idx);
 				Logging.itemComplete(LogType.OFFICE, d, day);
+				return d;
 			}
 		}
+		return null;
 	}
 
 	public boolean isFull() {

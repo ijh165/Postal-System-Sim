@@ -1,6 +1,8 @@
 package com.sfu;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.Set;
 import com.sfu.Logging.LogType;
 
 public class RunCommand {
+	private static Set<Office> destroyedOffices = new HashSet<>();
+
 	private static Set<Office> offices = new HashSet<>();
 	private static Set<String> wanted;
 	private static Network network;
@@ -135,7 +139,17 @@ public class RunCommand {
 						Logging.criminalApprehended(LogType.FRONT, recipient, dest);
 					} else {
 						Office office = getOffice(dest);
-						office.pickUp(recipient, day);
+						Deliverable d = office.pickUp(recipient, day);
+						if(d instanceof Letter) {
+							Letter l = (Letter) d;
+							if(wanted.contains(l.getReturnRecipient())) {
+								//destroy office if letter sent by criminal picked up
+								offices.remove(office);
+								destroyedOffices.add(office);
+								Logging.officeDestroyed(LogType.MASTER, office.getName());
+								Logging.officeDestroyed(LogType.OFFICE, office.getName());
+							}
+						}
 					}
 				} else if (isLetterCommand(cmd)) {
 					String src = parts[1];
@@ -219,6 +233,9 @@ public class RunCommand {
 			//End of the day. Log end of day.
 			Logging.endOfDay(LogType.MASTER, day, null);
 			for (Office o : offices) {
+				Logging.endOfDay(LogType.OFFICE, day, o.getName());
+			}
+			for (Office o : destroyedOffices) {
 				Logging.endOfDay(LogType.OFFICE, day, o.getName());
 			}
 
