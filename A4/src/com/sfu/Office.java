@@ -116,8 +116,33 @@ public class Office {
 	public void drop(int day) {
 		for (int idx = 0; idx < toPickUp.size(); idx++) {
 			Deliverable d = toPickUp.get(idx);
-			if (day-d.getArrivalDay()>14) {
+			if (day-d.getArrivalDay()-1 > 14) {
 				toPickUp.remove(d);
+				if(d instanceof Package) {
+					//directly destroy for package
+					Logging.deliverableDestroyed(LogType.MASTER, d);
+					Logging.deliverableDestroyed(LogType.OFFICE, d);
+				} else {
+					//for letter...
+					Letter l = (Letter) d;
+					if(l.getReturnRecipient().equals("NONE")) {
+						//directly destroy letter if don't have return address
+						Logging.deliverableDestroyed(LogType.MASTER, d);
+						Logging.deliverableDestroyed(LogType.OFFICE, d);
+					} else {
+						//return letter if have return address
+						Logging.newDeliverable(LogType.OFFICE, l);
+
+						boolean hasCriminalRecipient = wanted.contains(l.getRecipient());
+						boolean officeFull = isFull();
+						if (l.getDestOffice() != null && !hasCriminalRecipient && !officeFull) {
+							accept(l);
+						} else {
+							Logging.rejectDeliverable(LogType.MASTER, l);
+							Logging.rejectDeliverable(LogType.OFFICE, l);
+						}
+					}
+				}
 				idx = -1;
 			}
 		}

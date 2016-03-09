@@ -1,6 +1,19 @@
-7
-LETTER Vancouver Bill Burnaby Tim
-PACKAGE Burnaby Tim Vancouver 100 1000
+20
+LETTER Vancouver Bill Burnaby NONE
+PACKAGE Vancouver Tim Burnaby 1000 500
+DAY
+DAY
+DAY
+DAY
+DAY
+DAY
+DAY
+DAY
+DAY
+DAY
+DAY
+DAY
+DAY
 DAY
 DAY
 DAY
