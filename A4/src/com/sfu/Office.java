@@ -116,7 +116,7 @@ public class Office {
 	public void drop(int day) {
 		for (int idx = 0; idx < toPickUp.size(); idx++) {
 			Deliverable d = toPickUp.get(idx);
-			if (day-d.getArrivalDay()-1 > 14) {
+			if (day-(d.getInitDay()+d.getIniatingOffice().getTransitTime()) >= 14) {
 				toPickUp.remove(d);
 				if(d instanceof Package) {
 					//directly destroy for package
@@ -131,15 +131,24 @@ public class Office {
 						Logging.deliverableDestroyed(LogType.OFFICE, d);
 					} else {
 						//return letter if have return address
-						Logging.newDeliverable(LogType.OFFICE, l);
 
-						boolean hasCriminalRecipient = wanted.contains(l.getRecipient());
+						Letter letter = new Letter();
+						letter.setIniatingOffice(l.getDestOffice());
+						letter.setDestOffice(l.getIniatingOffice());
+						letter.setInitDay(day);
+						letter.setRecipient(l.getReturnRecipient());
+						letter.setReturnRecipient("NONE");
+						letter.setIntendedDest(l.getIniatingOffice().getName());
+
+						Logging.newDeliverable(LogType.OFFICE, letter);
+
+						boolean hasCriminalRecipient = wanted.contains(letter.getRecipient());
 						boolean officeFull = isFull();
-						if (l.getDestOffice() != null && !hasCriminalRecipient && !officeFull) {
-							accept(l);
+						if (letter.getDestOffice() != null && !hasCriminalRecipient && !officeFull) {
+							accept(letter);
 						} else {
-							Logging.rejectDeliverable(LogType.MASTER, l);
-							Logging.rejectDeliverable(LogType.OFFICE, l);
+							Logging.rejectDeliverable(LogType.MASTER, letter);
+							Logging.rejectDeliverable(LogType.OFFICE, letter);
 						}
 					}
 				}
