@@ -6,8 +6,6 @@ public class Deliverable {
 	private String intendedDest;
 	private String recipient;
 	private int initDay;
-	/*private int arrivalDay;*/ //my shit
-
 
 	public Office getIniatingOffice() {
 		return iniatingOffice;
@@ -39,13 +37,4 @@ public class Deliverable {
 	public void setInitDay(int initDay) {
 		this.initDay = initDay;
 	}
-
-	//my shit
-	/*public int getArrivalDay() {
-		return arrivalDay;
-	}
-	public void setArrivalDay(int arrivalDay) {
-		this.arrivalDay = arrivalDay;
-	}*/
-	//end of my shit
 }

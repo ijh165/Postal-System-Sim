@@ -16,7 +16,7 @@ public class Logging {
 	private static PrintWriter frontWriter;
 	private static Map<String, PrintWriter> officeWriterMap = new HashMap<>();
 
-	public static void initialize (Set<Office> offices) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void init(Set<Office> offices) throws FileNotFoundException, UnsupportedEncodingException {
 		String baseDir = System.getProperty("user.dir");
 		masterWriter = new PrintWriter(baseDir + "\\output\\log_master.txt", "UTF-8");
 		frontWriter = new PrintWriter(baseDir + "\\output\\log_front.txt", "UTF-8");
@@ -27,7 +27,7 @@ public class Logging {
 		}
 	}
 
-	private static PrintWriter getWriter (LogType type, String officeName) {
+	private static PrintWriter getWriter(LogType type, String officeName) {
 		if (type == LogType.MASTER) {
 			return masterWriter;
 		}
@@ -146,10 +146,21 @@ public class Logging {
 
 	public static void officeDestroyed(LogType type, String officeName) {
 		PrintWriter w = getWriter(type, officeName);
-		if(w != null) {
+		if (w != null) {
 			w.println("- " + officeName + " OFFICE DESTROYED -");
 		}
 		/*officeWriterMap.remove(officeName);*/
+	}
+
+	public static void officeBuilt(LogType type, String officeName) throws FileNotFoundException, UnsupportedEncodingException {
+		PrintWriter w = getWriter(type, officeName);
+		if (w == null) {
+			String baseDir = System.getProperty("user.dir");
+			PrintWriter writer = new PrintWriter(baseDir + "\\output\\log_" + officeName + ".txt", "UTF-8");
+			officeWriterMap.put(officeName, writer);
+			w = writer;
+		}
+		w.println("- " + officeName + " OFFICE BUILD -");
 	}
 
 	public static void cleanUp() {

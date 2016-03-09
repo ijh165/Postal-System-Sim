@@ -17,7 +17,7 @@ public class RunCommand {
 	private static Set<String> wanted;
 	private static Network network;
 
-	private static String baseDir;
+	/*private static String baseDir;*/
 	private static String commandsFilePath, officesFilePath, wantedFilePath;
 
 	private static Office getOffice(String officeName) {
@@ -29,7 +29,7 @@ public class RunCommand {
 		return null;
 	}
 
-	private static List<String> readFileIntoLine(String path) throws Exception {
+	private static List<String> readFileIntoLines(String path) throws Exception {
 		int count = 0;
 		List<String> lines = new ArrayList<>();
 		File file = new File(path);
@@ -56,12 +56,12 @@ public class RunCommand {
 
 	private static Set<Office> initOffices(String path) throws Exception {
 		Set<Office> offices = new HashSet<>();
-		List<String> lines = readFileIntoLine(path);
+		List<String> lines = readFileIntoLines(path);
 		for (String line : lines) {
-			String[] parts = line.split(" ");
-			if (parts.length == 6) {
-				Office o = new Office(parts[0], Integer.parseInt(parts[1]), Integer.parseInt(parts[2]),
-						Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5]));
+			String[] tokens = line.split(" ");
+			if (tokens.length == 6) {
+				Office o = new Office(tokens[0], Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]),
+						Integer.parseInt(tokens[3]), Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]));
 				offices.add(o);
 			}
 		}
@@ -70,32 +70,32 @@ public class RunCommand {
 
 	private static Set<String> initWanted(String path) throws Exception {
 		Set<String> wanted = new HashSet<>();
-		List<String> lines = readFileIntoLine(path);
+		List<String> lines = readFileIntoLines(path);
 		for (String line : lines) {
 			wanted.add(line.trim());
 		}
 		return wanted;
 	}
 
-	private static void prepareFiles() throws Exception {
-		baseDir = System.getProperty("user.dir");
+	private static void initInputFilePaths() throws Exception {
+		String baseDir = System.getProperty("user.dir");
 		commandsFilePath = baseDir + "\\commands.txt";
 		officesFilePath = baseDir + "\\offices.txt";
 		wantedFilePath = baseDir + "\\wanted.txt";
+	}
 
-		//my shit
-
+	private static void initOutputDir() {
 		//create output dir (if not exists)
+		String baseDir = System.getProperty("user.dir");
 		File f = new File(baseDir + "\\output");
 		if (!f.exists()) {
 			f.mkdir();
 		}
-
-		//end of my shit
 	}
 
 	public static void main(String[] args) throws Exception {
-		prepareFiles();
+		initInputFilePaths();
+		initOutputDir();
 		List<String> commands;
 		network = new Network();
 		try {
@@ -106,14 +106,14 @@ public class RunCommand {
 				o.setNetwork(network);
 			}
 			network.populateOffices(offices);
-			commands = readFileIntoLine(commandsFilePath);
+			commands = readFileIntoLines(commandsFilePath);
 		} catch (Exception e) {
 			//File reading problem, exit the program
 			throw new Exception("Problem happened", e);
 		}
 
 		//Initialize Logging
-		Logging.initialize(offices);
+		Logging.init(offices);
 
 		int idx = 0;
 		int day = 1;
@@ -131,10 +131,10 @@ public class RunCommand {
 					break;
 				}
 
-				String[] parts = cmd.split(" ");
+				String[] tokens = cmd.split(" ");
 				if (isPickupCommand(cmd)) {
-					String dest = parts[1];
-					String recipient = parts[2].trim();
+					String dest = tokens[1];
+					String recipient = tokens[2].trim();
 					if (wanted.contains(recipient)) {
 						Logging.criminalApprehended(LogType.FRONT, recipient, dest);
 					} else {
@@ -152,10 +152,10 @@ public class RunCommand {
 						}
 					}
 				} else if (isLetterCommand(cmd)) {
-					String src = parts[1];
-					String recipient = parts[2];
-					String dest = parts[3];
-					String returnRecipient = parts[4];
+					String src = tokens[1];
+					String recipient = tokens[2];
+					String dest = tokens[3];
+					String returnRecipient = tokens[4];
 					Office srcOffice = getOffice(src);
 					Office destOffice = getOffice(dest);
 
@@ -178,11 +178,11 @@ public class RunCommand {
 						Logging.rejectDeliverable(LogType.OFFICE, letter);
 					}
 				} else if (isPackageCommand(cmd)) {
-					String src = parts[1];
-					String recipient = parts[2];
-					String dest = parts[3];
-					int money = Integer.parseInt(parts[4]);
-					int length = Integer.parseInt(parts[5]);
+					String src = tokens[1];
+					String recipient = tokens[2];
+					String dest = tokens[3];
+					int money = Integer.parseInt(tokens[4]);
+					int length = Integer.parseInt(tokens[5]);
 
 					Office srcOffice = getOffice(src);
 					Office destOffice = getOffice(dest);
@@ -219,6 +219,33 @@ public class RunCommand {
 						Logging.rejectDeliverable(LogType.MASTER, pkg);
 						Logging.rejectDeliverable(LogType.OFFICE, pkg);
 					}
+				} else if (isBuildCommand(cmd)) {
+					Office newOffice = new Office(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
+							Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]));
+
+					//destroy office if build existing office
+					for (Office o : offices) {
+						if (o.getName().equals(newOffice.getName())) {
+							offices.remove(o);
+							destroyedOffices.add(o);
+							Logging.officeDestroyed(LogType.MASTER, o.getName());
+							Logging.officeDestroyed(LogType.OFFICE, o.getName());
+							break;
+						}
+					}
+
+					//remove office from destroyedOffices set if building a destroyed office
+					for (Office o : destroyedOffices) {
+						if (o.getName().equals(newOffice.getName())) {
+							destroyedOffices.remove(o);
+							break;
+						}
+					}
+
+					offices.add(newOffice);
+
+					Logging.officeBuilt(LogType.MASTER, newOffice.getName());
+					Logging.officeBuilt(LogType.OFFICE, newOffice.getName());
 				}
 			}
 
@@ -280,5 +307,9 @@ public class RunCommand {
 
 	private static boolean isPackageCommand(String command) {
 		return command.startsWith("PACKAGE");
+	}
+
+	private static boolean isBuildCommand(String command) {
+		return command.startsWith("BUILD");
 	}
 }
