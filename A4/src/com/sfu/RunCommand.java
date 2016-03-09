@@ -132,7 +132,7 @@ public class RunCommand {
 					String dest = parts[1];
 					String recipient = parts[2].trim();
 					if (wanted.contains(recipient)) {
-						Logging.criminalAppended(LogType.FRONT, recipient, dest);
+						Logging.criminalApprehended(LogType.FRONT, recipient, dest);
 					} else {
 						Office office = getOffice(dest);
 						office.pickUp(recipient, day);

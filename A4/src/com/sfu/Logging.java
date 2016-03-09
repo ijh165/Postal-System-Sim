@@ -136,11 +136,11 @@ public class Logging {
 		}
 	}
 
-	public static void criminalAppended(LogType type, String criminalName, String office) {
+	public static void criminalApprehended(LogType type, String criminalName, String office) {
 		PrintWriter w = getWriter(type, null);
 		if (w != null) {
-            w.println("- Criminal appended -");
-            w.println("Criminal name: " + criminalName + " at office: " + office);
+            w.println("- Criminal apprehended -");
+            w.println("Criminal name: " + criminalName + ", at office: " + office);
 		}
 	}
 
