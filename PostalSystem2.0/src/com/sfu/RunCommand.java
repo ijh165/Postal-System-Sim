@@ -11,17 +11,19 @@ import java.util.Set;
 import com.sfu.Logging.LogType;
 
 public class RunCommand {
-	private static Set<Office> destroyedOffices = new HashSet<>();
-
-	private static Set<Office> offices = new HashSet<>();
-	private static Set<String> wanted;
+	//system objects
+	private static Set<Office> existingOfficeSet;
+	private static Set<Office> destroyedOfficeSet;
+	private static Set<String> criminalSet;
 	private static Network network;
 
-	/*private static String baseDir;*/
-	private static String commandsFilePath, officesFilePath, wantedFilePath;
+	//input file paths
+	private static String commandsFilePath;
+	private static String officesFilePath;
+	private static String wantedFilePath;
 
 	private static Office getOffice(String officeName) {
-		for (Office o : offices) {
+		for (Office o : existingOfficeSet) {
 			if (o.getName().equals(officeName)) {
 				return o;
 			}
@@ -54,29 +56,6 @@ public class RunCommand {
 		return lines;
 	}
 
-	private static Set<Office> initOffices(String path) throws Exception {
-		Set<Office> offices = new HashSet<>();
-		List<String> lines = readFileIntoLines(path);
-		for (String line : lines) {
-			String[] tokens = line.split(" ");
-			if (tokens.length == 6) {
-				Office o = new Office(tokens[0], Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]),
-						Integer.parseInt(tokens[3]), Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]));
-				offices.add(o);
-			}
-		}
-		return offices;
-	}
-
-	private static Set<String> initWanted(String path) throws Exception {
-		Set<String> wanted = new HashSet<>();
-		List<String> lines = readFileIntoLines(path);
-		for (String line : lines) {
-			wanted.add(line.trim());
-		}
-		return wanted;
-	}
-
 	private static void initInputFilePaths() throws Exception {
 		String baseDir = System.getProperty("user.dir");
 		commandsFilePath = baseDir + "\\commands.txt";
@@ -84,46 +63,82 @@ public class RunCommand {
 		wantedFilePath = baseDir + "\\wanted.txt";
 	}
 
+	private static void initOffices() throws Exception {
+		List<String> lines = readFileIntoLines(officesFilePath);
+		for (String line : lines) {
+			String[] tokens = line.split(" ");
+			if (tokens.length == 6) {
+				Office o = new Office(tokens[0], Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]),
+						Integer.parseInt(tokens[3]), Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]));
+				existingOfficeSet.add(o);
+			}
+		}
+	}
+
+	private static void initWanted() throws Exception {
+		List<String> lines = readFileIntoLines(wantedFilePath);
+		for (String line : lines) {
+			criminalSet.add(line.trim());
+		}
+	}
+
 	private static void initOutputDir() {
 		//create output dir (if not exists)
 		String baseDir = System.getProperty("user.dir");
 		File f = new File(baseDir + "\\output");
 		if (!f.exists()) {
-			f.mkdir();
+			boolean mkdirSuccess = f.mkdir();
+			if(!mkdirSuccess){
+				System.out.println("Failed to create \"output\" directory, exiting program");
+				System.exit(1);
+			}
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
-		initInputFilePaths();
-		initOutputDir();
-		List<String> commands;
+	public static void init() throws Exception {
+		//initialize system objects
+		existingOfficeSet = new HashSet<>();
+		destroyedOfficeSet = new HashSet<>();
+		criminalSet = new HashSet<>();
 		network = new Network();
-		try {
-			wanted = initWanted(wantedFilePath);
-			offices = initOffices(officesFilePath);
-			for (Office o : offices) {
-				o.setWanted(wanted);
-				o.setNetwork(network);
-			}
-			network.populateOffices(offices);
-			commands = readFileIntoLines(commandsFilePath);
-		} catch (Exception e) {
-			//File reading problem, exit the program
-			throw new Exception("Problem happened", e);
+
+		//initialize file I/O
+		initInputFilePaths();
+		initOffices();
+		initWanted();
+		initOutputDir();
+	}
+
+	public static void main(String[] args) throws Exception
+	{
+		//Initialize Postal System
+		init();
+
+		//List to store commands
+		List<String> commands;
+
+		for (Office o : existingOfficeSet) {
+			o.setWanted(criminalSet);
+			o.setNetwork(network);
 		}
+		network.populateOffices(existingOfficeSet);
+		commands = readFileIntoLines(commandsFilePath);
 
 		//Initialize Logging
-		Logging.init(offices);
+		Logging.init(existingOfficeSet);
 
 		int idx = 0;
 		int day = 1;
 
-		boolean hasPendingDeliverables = hasPendingDeliverables();
+		/*boolean hasPendingDeliverables = hasPendingDeliverables();*/
 
-		while (idx < commands.size() /*|| hasPendingDeliverables*/) {
+		//RUN SIMULATION LOOP
+		while (idx < commands.size() /*|| hasPendingDeliverables*/)
+		{
 			//Start of the day, check if any in transit items have arrived
 			network.checkAndDeliver(day);
 
+			//Loop that runs for one day
 			for (int i = idx ; i< commands.size() ; i++) {
 				String cmd = commands.get(i);
 				if (isDayCommand(cmd)) {
@@ -135,17 +150,17 @@ public class RunCommand {
 				if (isPickupCommand(cmd)) {
 					String dest = tokens[1];
 					String recipient = tokens[2].trim();
-					if (wanted.contains(recipient)) {
+					if (criminalSet.contains(recipient)) {
 						Logging.criminalApprehended(LogType.FRONT, recipient, dest);
 					} else {
 						Office office = getOffice(dest);
 						Deliverable d = office.pickUp(recipient, day);
 						if(d instanceof Letter) {
 							Letter l = (Letter) d;
-							if(wanted.contains(l.getReturnRecipient())) {
+							if(criminalSet.contains(l.getReturnRecipient())) {
 								//destroy office if letter sent by criminal picked up
-								offices.remove(office);
-								destroyedOffices.add(office);
+								existingOfficeSet.remove(office);
+								destroyedOfficeSet.add(office);
 								Logging.officeDestroyed(LogType.MASTER, office.getName());
 								Logging.officeDestroyed(LogType.OFFICE, office.getName());
 							}
@@ -169,7 +184,7 @@ public class RunCommand {
 
 					Logging.newDeliverable(LogType.OFFICE, letter);
 
-					boolean hasCriminalRecipient = wanted.contains(letter.getRecipient());
+					boolean hasCriminalRecipient = criminalSet.contains(letter.getRecipient());
 					boolean officeFull = srcOffice.isFull();
 					if (destOffice != null && !hasCriminalRecipient && !officeFull) {
 						srcOffice.accept(letter);
@@ -198,7 +213,7 @@ public class RunCommand {
 
 					Logging.newDeliverable(LogType.OFFICE, pkg);
 
-					boolean hasCriminalRecipient = wanted.contains(pkg.getRecipient());
+					boolean hasCriminalRecipient = criminalSet.contains(pkg.getRecipient());
 					boolean officeFull = srcOffice.isFull();
 					boolean lengthFitSrc = (length <= srcOffice.getMaxPackageLength());
 					boolean postageCovered = pkg.getMoney()>=srcOffice.getRequiredPostage();
@@ -224,10 +239,10 @@ public class RunCommand {
 							Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]));
 
 					//destroy office if build existing office
-					for (Office o : offices) {
+					for (Office o : existingOfficeSet) {
 						if (o.getName().equals(newOffice.getName())) {
-							offices.remove(o);
-							destroyedOffices.add(o);
+							existingOfficeSet.remove(o);
+							destroyedOfficeSet.add(o);
 							Logging.officeDestroyed(LogType.MASTER, o.getName());
 							Logging.officeDestroyed(LogType.OFFICE, o.getName());
 							break;
@@ -235,14 +250,14 @@ public class RunCommand {
 					}
 
 					//remove office from destroyedOffices set if building a destroyed office
-					for (Office o : destroyedOffices) {
+					for (Office o : destroyedOfficeSet) {
 						if (o.getName().equals(newOffice.getName())) {
-							destroyedOffices.remove(o);
+							destroyedOfficeSet.remove(o);
 							break;
 						}
 					}
 
-					offices.add(newOffice);
+					existingOfficeSet.add(newOffice);
 
 					Logging.officeBuilt(LogType.MASTER, newOffice.getName());
 					Logging.officeBuilt(LogType.OFFICE, newOffice.getName());
@@ -250,30 +265,30 @@ public class RunCommand {
 			}
 
 			//End of the day.
-			for (Office o : offices) {
+			for (Office o : existingOfficeSet) {
 				// Remove deliverables longer than 14 days
 				o.drop(day);
 				// Send accepted deliverables
 				o.sendToNetwork();
 			}
 
-			//End of the day. Log end of day.
+			//Log end of day.
 			Logging.endOfDay(LogType.MASTER, day, null);
-			for (Office o : offices) {
+			for (Office o : existingOfficeSet) {
 				Logging.endOfDay(LogType.OFFICE, day, o.getName());
 			}
-			for (Office o : destroyedOffices) {
+			for (Office o : destroyedOfficeSet) {
 				Logging.endOfDay(LogType.OFFICE, day, o.getName());
 			}
 
-			hasPendingDeliverables = hasPendingDeliverables();
+			/*hasPendingDeliverables = hasPendingDeliverables();*/
 
 			//Ready for next day
 			day++;
 		}
 
+		//Cleanup Logging
 		Logging.cleanUp();
-
 	}
 
 	private static boolean hasPendingDeliverables() {
@@ -284,7 +299,7 @@ public class RunCommand {
 			hasPendingDeliverables = true;
 		}
 		if (!hasPendingDeliverables) {
-			for (Office o : offices) {
+			for (Office o : existingOfficeSet) {
 				if (!o.isEmpty()) {
 					hasPendingDeliverables = true;
 				}
