@@ -118,10 +118,10 @@ public class RunCommand {
 		List<String> commands;
 
 		for (Office o : existingOfficeSet) {
-			o.setWanted(criminalSet);
+			o.setCriminalSet(criminalSet);
 			o.setNetwork(network);
 		}
-		network.populateOffices(existingOfficeSet);
+		/*network.populateOffices(existingOfficeSet);*/
 		commands = readFileIntoLines(commandsFilePath);
 
 		//Initialize Logging
@@ -139,7 +139,8 @@ public class RunCommand {
 			network.checkAndDeliver(day);
 
 			//Loop that runs for one day
-			for (int i = idx ; i< commands.size() ; i++) {
+			for (int i = idx ; i< commands.size() ; i++)
+			{
 				String cmd = commands.get(i);
 				if (isDayCommand(cmd)) {
 					idx = i+1;
@@ -306,6 +307,10 @@ public class RunCommand {
 			}
 		}
 		return hasPendingDeliverables;
+	}
+
+	public static boolean isDestroyedOffice(Office office) {
+		return destroyedOfficeSet.contains(office);
 	}
 
 	private static boolean isDayCommand(String command) {

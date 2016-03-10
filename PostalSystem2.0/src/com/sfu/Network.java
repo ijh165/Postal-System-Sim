@@ -10,7 +10,7 @@ import com.sfu.Logging.LogType;
 
 public class Network {
 	private List<Deliverable> deliverablesInTransit = new ArrayList<>();
-	private Map<String, Office> officeMap = new HashMap<>();
+	/*private Map<String, Office> officeMap = new HashMap<>();*/
 
 	public void put(Deliverable d) {
 		deliverablesInTransit.add(d);
@@ -22,19 +22,44 @@ public class Network {
 			Office initOffice = d.getIniatingOffice();
 			if (day >= d.getInitDay() + initOffice.getTransitTime() + 1) {
 				Office destOffice = d.getDestOffice();
-				Logging.transitArrived(LogType.OFFICE, d);
 				deliverablesInTransit.remove(idx);
-				//put the deliverable into this office
-				destOffice.receiveFromNetwork(d);
+				if (RunCommand.isDestroyedOffice(destOffice)) {
+					//if destination office is destroyed...
+
+					//debug stuffzzz
+					System.out.print(d instanceof Letter? "LETTER":"PACKAGE");
+					System.out.println(" " + d.getDestOffice().getName());
+
+					if (d instanceof Letter) {
+						Letter l = (Letter) d;
+						if (!l.getReturnRecipient().equals("NONE")) {
+							//return letter without logging if it has return address
+							Letter letter = new Letter();
+							letter.setIniatingOffice(l.getDestOffice());
+							letter.setDestOffice(l.getIniatingOffice());
+							letter.setInitDay(day);
+							letter.setRecipient(l.getReturnRecipient());
+							letter.setReturnRecipient("NONE");
+							letter.setIntendedDest(l.getIniatingOffice().getName());
+							deliverablesInTransit.add(letter);
+						}
+					}
+
+				} else {
+					//put the deliverable into this office
+					destOffice.receiveFromNetwork(d);
+					//log arriving deliverable
+					Logging.transitArrived(LogType.OFFICE, d);
+				}
 			}
 		}
 	}
 
-	public void populateOffices(Set<Office> offices) {
+	/*public void populateOffices(Set<Office> offices) {
 		for (Office o : offices) {
 			officeMap.put(o.getName(), o);
 		}
-	}
+	}*/
 
 	public boolean isNetworkEmpty() {
 		return deliverablesInTransit.size() == 0;

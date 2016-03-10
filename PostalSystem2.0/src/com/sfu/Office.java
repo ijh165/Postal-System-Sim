@@ -1,7 +1,6 @@
 package com.sfu;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,18 +15,13 @@ public class Office {
 	private int maxPackageLength;
 	private List<Deliverable> toMail = new ArrayList<>();
 	private List<Deliverable> toPickUp = new ArrayList<>();
-
-	private Set<String> wanted;
-	public void setWanted(Set<String> wanted) {
-		this.wanted = wanted;
-	}
+	private Set<String> criminalSet;
 	private Network network;
-	public void setNetwork(Network network) {
-		this.network = network;
-	}
+
+
 
 	public Office(String name, int transitTime, int requiredPostage,
-			int capacity, int persuasionAmount, int maxPackageLength) {
+				int capacity, int persuasionAmount, int maxPackageLength) {
 		super();
 		this.name = name;
 		this.transitTime = transitTime;
@@ -37,6 +31,7 @@ public class Office {
 		this.maxPackageLength = maxPackageLength;
 	}
 
+	//getters and setters
 	public String getName() {
 		return name;
 	}
@@ -73,9 +68,21 @@ public class Office {
 	public void setMaxPackageLength(int maxPackageLength) {
 		this.maxPackageLength = maxPackageLength;
 	}
+	public Set<String> getCriminalSet() {
+		return criminalSet;
+	}
+	public void setCriminalSet(Set<String> criminalSet) {
+		this.criminalSet = criminalSet;
+	}
+	public Network getNetwork() {
+		return network;
+	}
+	public void setNetwork(Network network) {
+		this.network = network;
+	}
 
-	public void acceptLetterIfGood(Letter letter) {
-		boolean hasCriminalRecipient = wanted.contains(letter.getRecipient());
+	/*public void acceptLetterIfGood(Letter letter) {
+		boolean hasCriminalRecipient = criminalSet.contains(letter.getRecipient());
 		boolean officeFull = isFull();
 		Office destOffice = letter.getDestOffice();
 		if (destOffice != null && !hasCriminalRecipient && !officeFull) {
@@ -84,11 +91,16 @@ public class Office {
 			Logging.rejectDeliverable(LogType.MASTER, letter);
 			Logging.rejectDeliverable(LogType.OFFICE, letter);
 		}
-	}
+	}*/
 
-	//Receive from person
+	//Receive deliverable
 	public void accept(Deliverable d) {
 		Logging.deliverableAccepted(LogType.OFFICE, d);
+		toMail.add(d);
+	}
+
+	//Receive deliverable without logging
+	public void acceptWithoutLogging(Deliverable d) {
 		toMail.add(d);
 	}
 
@@ -142,7 +154,7 @@ public class Office {
 
 						Logging.newDeliverable(LogType.OFFICE, letter);
 
-						boolean hasCriminalRecipient = wanted.contains(letter.getRecipient());
+						boolean hasCriminalRecipient = criminalSet.contains(letter.getRecipient());
 						boolean officeFull = isFull();
 						if (letter.getDestOffice() != null && !hasCriminalRecipient && !officeFull) {
 							accept(letter);
