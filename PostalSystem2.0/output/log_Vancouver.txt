@@ -15,5 +15,3 @@ Destination: Burnaby
 - - DAY 3 OVER - -
 - - DAY 4 OVER - -
 - - DAY 5 OVER - -
-- Standard transit arrival -
-- - DAY 6 OVER - -

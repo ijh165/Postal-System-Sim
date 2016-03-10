@@ -118,7 +118,7 @@ public class Logging {
 		PrintWriter w = getWriter(type, src);
 		if (w != null) {
             w.println("- Delivery process complete -");
-			w.println("Delivery took " + (day - d.getInitDay() + 1) + " days");
+			w.println("Delivery took " + (day - d.getInitDay() + d.getDaysDelayed() + 1) + " days");
 		}
 	}
 

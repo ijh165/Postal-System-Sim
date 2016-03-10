@@ -7,6 +7,8 @@ public class Deliverable {
 	private String recipient;
 	private int initDay;
 
+	private int daysDelayed = 0;
+
 	public Office getIniatingOffice() {
 		return iniatingOffice;
 	}
@@ -36,5 +38,20 @@ public class Deliverable {
 	}
 	public void setInitDay(int initDay) {
 		this.initDay = initDay;
+	}
+
+	public int getDaysDelayed() {
+		return daysDelayed;
+	}
+	/*public void setDaysDelayed(int daysDelayed) {
+		this.daysDelayed = daysDelayed;
+	}*/
+
+	public void delay(int daysDelayed) {
+		this.daysDelayed += daysDelayed;
+	}
+
+	public void resetDaysDelayed() {
+		daysDelayed = 0;
 	}
 }

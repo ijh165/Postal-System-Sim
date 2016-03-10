@@ -262,6 +262,27 @@ public class RunCommand {
 
 					Logging.officeBuilt(LogType.MASTER, newOffice.getName());
 					Logging.officeBuilt(LogType.OFFICE, newOffice.getName());
+				} else if (isScienceCommand(cmd)) {
+
+				} else if (isGoodCommand(cmd)) {
+
+				} else if (isNsaDelayCommand(cmd)) {
+					//do this now
+					String delayedRecipient = tokens[1];
+					int daysDelayed = Integer.parseInt(tokens[2]);
+
+					if(!network.delayDeliverable(delayedRecipient, daysDelayed)) {
+						//check unpicked deliverables if delay on network fail
+						for (Office o : existingOfficeSet) {
+							o.delayDeliverable(delayedRecipient, daysDelayed);
+						}
+					}
+				} else if (isSneakCommand(cmd)) {
+
+				} else if (isInflationCommand(cmd)) {
+
+				} else if (isDeflationCommand(cmd)) {
+
 				}
 			}
 
@@ -313,6 +334,8 @@ public class RunCommand {
 		return destroyedOfficeSet.contains(office);
 	}
 
+	//command check functions
+
 	private static boolean isDayCommand(String command) {
 		return command.startsWith("DAY");
 	}
@@ -331,5 +354,29 @@ public class RunCommand {
 
 	private static boolean isBuildCommand(String command) {
 		return command.startsWith("BUILD");
+	}
+
+	private static boolean isScienceCommand(String command) {
+		return command.startsWith("SCIENCE");
+	}
+
+	private static boolean isGoodCommand(String command) {
+		return command.startsWith("GOOD");
+	}
+
+	private static boolean isNsaDelayCommand(String command) {
+		return command.startsWith("NSADELAY");
+	}
+
+	private static boolean isSneakCommand(String command) {
+		return command.startsWith("SNEAK");
+	}
+
+	private static boolean isInflationCommand(String command) {
+		return command.startsWith("INFLATION");
+	}
+
+	private static boolean isDeflationCommand(String command) {
+		return command.startsWith("DEFLATION");
 	}
 }

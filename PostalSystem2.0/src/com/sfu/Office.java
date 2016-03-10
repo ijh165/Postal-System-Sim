@@ -185,13 +185,34 @@ public class Office {
 		int size = toPickUp.size();
 		for (int idx = size-1 ; idx >= 0 ; idx--) {
 			Deliverable d = toPickUp.get(idx);
-			if (recipient.equals(d.getRecipient())) {
+			if (recipient.equals(d.getRecipient()) &&
+				day >= d.getInitDay() + d.getIniatingOffice().getTransitTime() + d.getDaysDelayed() + 1) {
+				d.resetDaysDelayed();
+
+				//debug stuffz
+				/*System.out.print(d instanceof Letter? "LETTER ":"PACKAGE ");
+				System.out.print(d.getIniatingOffice() + " ");
+				System.out.print(d.getRecipient() + " ");
+				System.out.println(d.getDestOffice() + " ");*/
+
 				toPickUp.remove(idx);
 				Logging.itemComplete(LogType.OFFICE, d, day);
 				return d;
 			}
 		}
 		return null;
+	}
+
+	//delay deliverable with the specified recipient and days delayed, return true upon success
+	public boolean delayDeliverable(String recipient, int daysDelayed) {
+		boolean success = false;
+		for (Deliverable d : toPickUp) {
+			if (d.getRecipient().equals(recipient)) {
+				d.delay(daysDelayed);
+				success = true;
+			}
+		}
+		return success;
 	}
 
 	public boolean isFull() {

@@ -20,16 +20,12 @@ public class Network {
 		for (int idx = deliverablesInTransit.size()-1 ; idx >= 0 ; idx--) {
 			Deliverable d = deliverablesInTransit.get(idx);
 			Office initOffice = d.getIniatingOffice();
-			if (day >= d.getInitDay() + initOffice.getTransitTime() + 1) {
+			if (day >= d.getInitDay() + initOffice.getTransitTime() + d.getDaysDelayed() + 1) {
+				d.resetDaysDelayed();
 				Office destOffice = d.getDestOffice();
 				deliverablesInTransit.remove(idx);
 				if (RunCommand.isDestroyedOffice(destOffice)) {
 					//if destination office is destroyed...
-
-					//debug stuffzzz
-					System.out.print(d instanceof Letter? "LETTER":"PACKAGE");
-					System.out.println(" " + d.getDestOffice().getName());
-
 					if (d instanceof Letter) {
 						Letter l = (Letter) d;
 						if (!l.getReturnRecipient().equals("NONE")) {
@@ -44,7 +40,6 @@ public class Network {
 							deliverablesInTransit.add(letter);
 						}
 					}
-
 				} else {
 					//put the deliverable into this office
 					destOffice.receiveFromNetwork(d);
@@ -53,6 +48,18 @@ public class Network {
 				}
 			}
 		}
+	}
+
+	//delay deliverable with the specified recipient and days delayed, return true upon success
+	public boolean delayDeliverable(String recipient, int daysDelayed) {
+		boolean success = false;
+		for (Deliverable d : deliverablesInTransit) {
+			if (d.getRecipient().equals(recipient)) {
+				d.delay(daysDelayed);
+				success = true;
+			}
+		}
+		return success;
 	}
 
 	/*public void populateOffices(Set<Office> offices) {
