@@ -135,7 +135,11 @@ public class RunCommand {
 		//RUN SIMULATION LOOP
 		while (idx < commands.size() /*|| hasPendingDeliverables*/)
 		{
-			//Start of the day, check if any in transit items have arrived
+			//update delayed unpicked up deliverables which are ready to be pickued up
+			for(Office o : existingOfficeSet) {
+				o.updatePickUpAvailability(day);
+			}
+			//check for arriving any transit items have arrived
 			network.checkAndDeliver(day);
 
 			//Loop that runs for one day
@@ -289,7 +293,7 @@ public class RunCommand {
 			//End of the day.
 			for (Office o : existingOfficeSet) {
 				// Remove deliverables longer than 14 days
-				o.drop(day);
+				o.dropUnpickedUp(day);
 				// Send accepted deliverables
 				o.sendToNetwork();
 			}

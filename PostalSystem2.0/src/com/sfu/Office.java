@@ -124,8 +124,8 @@ public class Office {
 		toPickUp.add(d);
 	}
 
-	//Remove deliverables to be picked up longer than 14 days
-	public void drop(int day) {
+	//Remove deliverables unpicked up for longer than 14 days
+	public void dropUnpickedUp(int day) {
 		for (int idx = 0; idx < toPickUp.size(); idx++) {
 			Deliverable d = toPickUp.get(idx);
 			if (day-(d.getInitDay()+d.getIniatingOffice().getTransitTime()) >= 14) {
@@ -176,7 +176,6 @@ public class Office {
 			toMail.remove(idx);
 			network.put(d);
 			Logging.transitSent(LogType.OFFICE, d);
-
 		}
 	}
 
@@ -185,16 +184,8 @@ public class Office {
 		int size = toPickUp.size();
 		for (int idx = size-1 ; idx >= 0 ; idx--) {
 			Deliverable d = toPickUp.get(idx);
-			if (recipient.equals(d.getRecipient()) &&
-				day >= d.getInitDay() + d.getIniatingOffice().getTransitTime() + d.getDaysDelayed() + 1) {
+			if (recipient.equals(d.getRecipient()) && d.isAvailableForPickUp()) {
 				d.resetDaysDelayed();
-
-				//debug stuffz
-				/*System.out.print(d instanceof Letter? "LETTER ":"PACKAGE ");
-				System.out.print(d.getIniatingOffice() + " ");
-				System.out.print(d.getRecipient() + " ");
-				System.out.println(d.getDestOffice() + " ");*/
-
 				toPickUp.remove(idx);
 				Logging.itemComplete(LogType.OFFICE, d, day);
 				return d;
@@ -208,11 +199,24 @@ public class Office {
 		boolean success = false;
 		for (Deliverable d : toPickUp) {
 			if (d.getRecipient().equals(recipient)) {
+				d.setAvailableForPickUp(false);
 				d.delay(daysDelayed);
 				success = true;
 			}
 		}
 		return success;
+	}
+
+	//update pickup availability of deliverables if delay is over
+	public void updatePickUpAvailability(int day) {
+		for (Deliverable d : toPickUp) {
+			if (day >= d.getInitDay() + d.getIniatingOffice().getTransitTime() + d.getDaysDelayed() + 1) {
+				//make it available for pickup
+				d.setAvailableForPickUp(true);
+				//re-log arriving deliverable
+				Logging.transitArrived(LogType.OFFICE, d);
+			}
+		}
 	}
 
 	public boolean isFull() {

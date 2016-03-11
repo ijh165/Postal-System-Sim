@@ -9,6 +9,8 @@ public class Deliverable {
 
 	private int daysDelayed = 0;
 
+	private boolean availableForPickUp = false;
+
 	public Office getIniatingOffice() {
 		return iniatingOffice;
 	}
@@ -46,6 +48,14 @@ public class Deliverable {
 	/*public void setDaysDelayed(int daysDelayed) {
 		this.daysDelayed = daysDelayed;
 	}*/
+
+	public boolean isAvailableForPickUp() {
+		return availableForPickUp;
+	}
+
+	public void setAvailableForPickUp(boolean availableForPickUp) {
+		this.availableForPickUp = availableForPickUp;
+	}
 
 	public void delay(int daysDelayed) {
 		this.daysDelayed += daysDelayed;
