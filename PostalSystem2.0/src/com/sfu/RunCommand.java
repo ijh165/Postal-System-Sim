@@ -275,7 +275,7 @@ public class RunCommand {
 					String delayedRecipient = tokens[1];
 					int daysDelayed = Integer.parseInt(tokens[2]);
 
-					if(!network.delayDeliverable(delayedRecipient, daysDelayed)) {
+					if (!network.delayDeliverable(delayedRecipient, daysDelayed)) {
 						//check unpicked deliverables if delay on network fail
 						for (Office o : existingOfficeSet) {
 							o.delayDeliverable(delayedRecipient, daysDelayed);
@@ -284,9 +284,13 @@ public class RunCommand {
 				} else if (isSneakCommand(cmd)) {
 
 				} else if (isInflationCommand(cmd)) {
-
+					for (Office o : existingOfficeSet) {
+						o.inflation();
+					}
 				} else if (isDeflationCommand(cmd)) {
-
+					for (Office o : existingOfficeSet) {
+						o.deflation();
+					}
 				}
 			}
 

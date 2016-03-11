@@ -219,6 +219,20 @@ public class Office {
 		}
 	}
 
+	//add the amount of currently stored mail in each office to the postage and persuasion costs
+	public void inflation() {
+		int incrAmount = toMail.size() + toPickUp.size();
+		requiredPostage += incrAmount;
+		persuasionAmount += incrAmount;
+	}
+
+	//subtract the amount of currently stored mail in each office to the postage and persuasion costs (costs cannot go below zero)
+	public void deflation() {
+		int decrAmount = toMail.size() + toPickUp.size();
+		requiredPostage = (requiredPostage-decrAmount)>0 ? (requiredPostage-decrAmount):0 ;
+		persuasionAmount = (persuasionAmount-decrAmount)>0 ? (persuasionAmount-decrAmount):0;
+	}
+
 	public boolean isFull() {
 		return (this.toMail.size() + this.toPickUp.size()) >= capacity;
 	}
