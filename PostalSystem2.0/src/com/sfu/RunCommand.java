@@ -22,7 +22,7 @@ public class RunCommand {
 	private static String officesFilePath;
 	private static String wantedFilePath;
 
-	private static Office getOffice(String officeName) {
+	private static Office getExistingOffice(String officeName) {
 		for (Office o : existingOfficeSet) {
 			if (o.getName().equals(officeName)) {
 				return o;
@@ -139,21 +139,26 @@ public class RunCommand {
 			for(Office o : existingOfficeSet) {
 				o.updatePickUpAvailability(day);
 			}
-			//check for arriving any transit items have arrived
+
+			//check for any transit items have arrived
 			network.checkAndDeliver(day);
 
 			//sneak flag
 			boolean sneak = false;
 
 			//Loop that runs for one day
-			for (int i = idx ; i< commands.size() ; i++)
+			for (int i=idx; i<commands.size(); i++)
 			{
 				String cmd = commands.get(i);
 				if (isDayCommand(cmd)) {
 					idx = i+1;
 					break;
 				}
+				if (isGoodCommand(cmd)) {
 
+				}
+
+				//only split tokens if neither day nor good commands (which is only 1 word)
 				String[] tokens = cmd.split(" ");
 				if (isPickupCommand(cmd)) {
 					String dest = tokens[1];
@@ -161,27 +166,31 @@ public class RunCommand {
 					if (criminalSet.contains(recipient)) {
 						Logging.criminalApprehended(LogType.FRONT, recipient, dest);
 					} else {
-						Office office = getOffice(dest);
-						Deliverable d = office.pickUp(recipient, day);
-						if(d instanceof Letter) {
-							Letter l = (Letter) d;
-							if(criminalSet.contains(l.getReturnRecipient())) {
-								//destroy office if letter sent by criminal picked up
-								existingOfficeSet.remove(office);
-								destroyedOfficeSet.add(office);
-								Logging.officeDestroyed(LogType.MASTER, office.getName());
-								Logging.officeDestroyed(LogType.OFFICE, office.getName());
+						Office office = getExistingOffice(dest);
+						if (office != null) {
+							Deliverable d = office.pickUp(recipient, day);
+							if (d instanceof Letter) {
+								Letter l = (Letter) d;
+								if (criminalSet.contains(l.getReturnRecipient())) {
+									//destroy office if letter sent by criminal picked up
+									existingOfficeSet.remove(office);
+									destroyedOfficeSet.add(office);
+									Logging.officeDestroyed(LogType.MASTER, office.getName());
+									Logging.officeDestroyed(LogType.OFFICE, office.getName());
+								}
 							}
 						}
 					}
 				} else if (isLetterCommand(cmd)) {
+					//parse
 					String src = tokens[1];
 					String recipient = tokens[2];
 					String dest = tokens[3];
 					String returnRecipient = tokens[4];
-					Office srcOffice = getOffice(src);
-					Office destOffice = getOffice(dest);
-
+					//fetch offices
+					Office srcOffice = getExistingOffice(src);
+					Office destOffice = getExistingOffice(dest);
+					//object creation
 					Letter letter = new Letter();
 					letter.setIniatingOffice(srcOffice);
 					letter.setDestOffice(destOffice);
@@ -189,30 +198,34 @@ public class RunCommand {
 					letter.setRecipient(recipient);
 					letter.setReturnRecipient(returnRecipient);
 					letter.setIntendedDest(dest);
-
-					Logging.newDeliverable(LogType.OFFICE, letter);
-
-					boolean hasCriminalRecipient = criminalSet.contains(letter.getRecipient());
-					boolean officeFull = srcOffice.isFull();
-					if ((destOffice != null && !hasCriminalRecipient && !officeFull) || sneak) {
-						srcOffice.accept(letter);
-					} else {
-						Logging.rejectDeliverable(LogType.MASTER, letter);
-						Logging.rejectDeliverable(LogType.OFFICE, letter);
+					//cmd fails if srcOffice is null (prevent null pointer exception)
+					if (srcOffice != null) {
+						//log new deliverable
+						Logging.newDeliverable(LogType.OFFICE, letter);
+						//accept/reject deliverable (and log them)
+						boolean hasCriminalRecipient = criminalSet.contains(letter.getRecipient());
+						boolean officeFull = srcOffice.isFull();
+						if ((destOffice != null && !hasCriminalRecipient && !officeFull) || sneak) {
+							srcOffice.accept(letter);
+						} else {
+							Logging.rejectDeliverable(LogType.MASTER, letter);
+							Logging.rejectDeliverable(LogType.OFFICE, letter);
+						}
 					}
-
-					sneak = false; //reset sneak flag
+					//reset sneak flag
+					sneak = false;
 
 				} else if (isPackageCommand(cmd)) {
+					//parse
 					String src = tokens[1];
 					String recipient = tokens[2];
 					String dest = tokens[3];
 					int money = Integer.parseInt(tokens[4]);
 					int length = Integer.parseInt(tokens[5]);
-
-					Office srcOffice = getOffice(src);
-					Office destOffice = getOffice(dest);
-
+					//fetch offices
+					Office srcOffice = getExistingOffice(src);
+					Office destOffice = getExistingOffice(dest);
+					//object creation
 					Package pkg = new Package();
 					pkg.setIniatingOffice(srcOffice);
 					pkg.setDestOffice(destOffice);
@@ -221,38 +234,41 @@ public class RunCommand {
 					pkg.setLength(length);
 					pkg.setMoney(money);
 					pkg.setIntendedDest(dest);
-
-					Logging.newDeliverable(LogType.OFFICE, pkg);
-
-					boolean hasCriminalRecipient = criminalSet.contains(pkg.getRecipient());
-					boolean officeFull = srcOffice.isFull();
-					boolean lengthFitSrc = (length <= srcOffice.getMaxPackageLength());
-					boolean postageCovered = pkg.getMoney()>=srcOffice.getRequiredPostage();
-
-					if ((!hasCriminalRecipient && !officeFull &&
-						postageCovered && lengthFitSrc &&
-						destOffice != null && (length <= destOffice.getMaxPackageLength())) ||
-						sneak )
-					{
-						srcOffice.accept(pkg);
+					//cmd fails if srcOffice is null (prevent null pointer exception)
+					if (srcOffice != null) {
+						//log new deliverable
+						Logging.newDeliverable(LogType.OFFICE, pkg);
+						//accept/reject deliverable (and log them)
+						boolean hasCriminalRecipient = criminalSet.contains(pkg.getRecipient());
+						boolean officeFull = srcOffice.isFull();
+						boolean lengthFitSrc = (length <= srcOffice.getMaxPackageLength());
+						boolean postageCovered = pkg.getMoney() >= srcOffice.getRequiredPostage();
+						if ((!hasCriminalRecipient && !officeFull &&
+							postageCovered && lengthFitSrc &&
+							destOffice != null && (length <= destOffice.getMaxPackageLength()))
+							||
+							sneak)
+						{
+							srcOffice.accept(pkg);
+						}
+						else if (pkg.getMoney() >= (srcOffice.getRequiredPostage() + srcOffice.getPersuasionAmount()))
+						{
+							srcOffice.accept(pkg);
+							Logging.briberyDetected(LogType.MASTER, pkg);
+						}
+						else
+						{
+							Logging.rejectDeliverable(LogType.MASTER, pkg);
+							Logging.rejectDeliverable(LogType.OFFICE, pkg);
+						}
 					}
-					else if (pkg.getMoney() >= (srcOffice.getRequiredPostage() + srcOffice.getPersuasionAmount()))
-					{
-						srcOffice.accept(pkg);
-						Logging.briberyDetected(LogType.MASTER, pkg);
-					}
-					else
-					{
-						Logging.rejectDeliverable(LogType.MASTER, pkg);
-						Logging.rejectDeliverable(LogType.OFFICE, pkg);
-					}
-
-					sneak = false; //reset sneak flag
+					//reset sneak flag
+					sneak = false;
 
 				} else if (isBuildCommand(cmd)) {
+					//create new office object
 					Office newOffice = new Office(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
 							Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]));
-
 					//destroy office if build existing office
 					for (Office o : existingOfficeSet) {
 						if (o.getName().equals(newOffice.getName())) {
@@ -263,23 +279,20 @@ public class RunCommand {
 							break;
 						}
 					}
-
-					//remove office from destroyedOffices set if building a destroyed office
+					//remove office from destroyedOffices set if building is destroyed office
 					for (Office o : destroyedOfficeSet) {
 						if (o.getName().equals(newOffice.getName())) {
 							destroyedOfficeSet.remove(o);
 							break;
 						}
 					}
-
+					//add to existing office set
 					existingOfficeSet.add(newOffice);
-
+					//log office built
 					Logging.officeBuilt(LogType.MASTER, newOffice.getName());
 					Logging.officeBuilt(LogType.OFFICE, newOffice.getName());
 
 				} else if (isScienceCommand(cmd)) {
-
-				} else if (isGoodCommand(cmd)) {
 
 				} else if (isNsaDelayCommand(cmd)) {
 					String delayedRecipient = tokens[1];
@@ -352,47 +365,36 @@ public class RunCommand {
 	}
 
 	//command check functions
-
 	private static boolean isDayCommand(String command) {
 		return command.startsWith("DAY");
 	}
-
-	private static boolean isPickupCommand(String command) {
-		return command.startsWith("PICKUP");
-	}
-
-	private static boolean isLetterCommand(String command) {
-		return command.startsWith("LETTER");
-	}
-
-	private static boolean isPackageCommand(String command) {
-		return command.startsWith("PACKAGE");
-	}
-
-	private static boolean isBuildCommand(String command) {
-		return command.startsWith("BUILD");
-	}
-
-	private static boolean isScienceCommand(String command) {
-		return command.startsWith("SCIENCE");
-	}
-
 	private static boolean isGoodCommand(String command) {
 		return command.startsWith("GOOD");
 	}
-
+	private static boolean isPickupCommand(String command) {
+		return command.startsWith("PICKUP");
+	}
+	private static boolean isLetterCommand(String command) {
+		return command.startsWith("LETTER");
+	}
+	private static boolean isPackageCommand(String command) {
+		return command.startsWith("PACKAGE");
+	}
+	private static boolean isBuildCommand(String command) {
+		return command.startsWith("BUILD");
+	}
+	private static boolean isScienceCommand(String command) {
+		return command.startsWith("SCIENCE");
+	}
 	private static boolean isNsaDelayCommand(String command) {
 		return command.startsWith("NSADELAY");
 	}
-
 	private static boolean isSneakCommand(String command) {
 		return command.startsWith("SNEAK");
 	}
-
 	private static boolean isInflationCommand(String command) {
 		return command.startsWith("INFLATION");
 	}
-
 	private static boolean isDeflationCommand(String command) {
 		return command.startsWith("DEFLATION");
 	}

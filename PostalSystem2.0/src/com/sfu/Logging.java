@@ -149,7 +149,6 @@ public class Logging {
 		if (w != null) {
 			w.println("- " + officeName + " OFFICE DESTROYED -");
 		}
-		/*officeWriterMap.remove(officeName);*/
 	}
 
 	public static void officeBuilt(LogType type, String officeName) throws FileNotFoundException, UnsupportedEncodingException {
@@ -161,6 +160,13 @@ public class Logging {
 			w = writer;
 		}
 		w.println("- " + officeName + " OFFICE BUILD -");
+	}
+
+	public static void goodDay(LogType type, String officeName) {
+		PrintWriter w = getWriter(type, officeName);
+		if (w != null) {
+			w.println("- It was a good day! -");
+		}
 	}
 
 	public static void cleanUp() {

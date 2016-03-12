@@ -1,10 +1,7 @@
-9
+6
 LETTER Vancouver Bill Burnaby Apple
 DAY
 DAY
 DAY
 DAY
-LETTER Burnaby Sarah Vancouver Bob
-PICKUP Burnaby Bill
-LETTER Burnaby Bill Vancouver Tom
 DAY

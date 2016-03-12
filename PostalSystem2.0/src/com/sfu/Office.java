@@ -205,7 +205,9 @@ public class Office {
 	//update pickup availability of deliverables if delay is over
 	public void updatePickUpAvailability(int day) {
 		for (Deliverable d : toPickUp) {
-			if (day >= d.getInitDay() + d.getIniatingOffice().getTransitTime() + d.getDaysDelayed() + 1) {
+			if (!d.isAvailableForPickUp() &&
+				day >= d.getInitDay() + d.getIniatingOffice().getTransitTime() + d.getDaysDelayed() + 1)
+			{
 				//make it available for pickup
 				d.setAvailableForPickUp(true);
 				//re-log arriving deliverable
