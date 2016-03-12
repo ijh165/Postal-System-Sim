@@ -174,7 +174,7 @@ public class Office {
 		}
 	}
 
-	//Pickup a deliverable
+	//Pickup a deliverable, return the deliverable upon success and null upon failure
 	public Deliverable pickUp(String recipient, int day) {
 		int size = toPickUp.size();
 		for (int idx = size-1 ; idx >= 0 ; idx--) {

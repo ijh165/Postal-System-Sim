@@ -1,7 +1,13 @@
-6
-LETTER Vancouver Bill Burnaby Apple
+12
+LETTER Vancouver Tom Burnaby Bill
 DAY
+PICKUP Burnaby Tom
+GOOD
+LETTER Vancouver Tom Burnaby Bill
 DAY
+PICKUP Burnaby Tom
+GOOD
+LETTER Vancouver Tom Burnaby Bill
 DAY
 DAY
 DAY
