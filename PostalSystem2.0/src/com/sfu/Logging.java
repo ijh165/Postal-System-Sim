@@ -79,7 +79,7 @@ public class Logging {
 
 	public static void deliverableAccepted(LogType type, Deliverable d) {
 		String src = d.getIniatingOffice().getName();
-		String dest = d.getDestOffice().getName();
+		String dest = d.getDestOffice() != null ? d.getDestOffice().getName() : d.getIntendedDest();
 		PrintWriter w = getWriter(type, src);
 		if (w != null) {
 			if (d instanceof Letter) {

@@ -142,6 +142,9 @@ public class RunCommand {
 			//check for arriving any transit items have arrived
 			network.checkAndDeliver(day);
 
+			//sneak flag
+			boolean sneak = false;
+
 			//Loop that runs for one day
 			for (int i = idx ; i< commands.size() ; i++)
 			{
@@ -191,12 +194,15 @@ public class RunCommand {
 
 					boolean hasCriminalRecipient = criminalSet.contains(letter.getRecipient());
 					boolean officeFull = srcOffice.isFull();
-					if (destOffice != null && !hasCriminalRecipient && !officeFull) {
+					if ((destOffice != null && !hasCriminalRecipient && !officeFull) || sneak) {
 						srcOffice.accept(letter);
 					} else {
 						Logging.rejectDeliverable(LogType.MASTER, letter);
 						Logging.rejectDeliverable(LogType.OFFICE, letter);
 					}
+
+					sneak = false; //reset sneak flag
+
 				} else if (isPackageCommand(cmd)) {
 					String src = tokens[1];
 					String recipient = tokens[2];
@@ -223,22 +229,26 @@ public class RunCommand {
 					boolean lengthFitSrc = (length <= srcOffice.getMaxPackageLength());
 					boolean postageCovered = pkg.getMoney()>=srcOffice.getRequiredPostage();
 
-					if (!hasCriminalRecipient && !officeFull &&
+					if ((!hasCriminalRecipient && !officeFull &&
 						postageCovered && lengthFitSrc &&
-						destOffice != null && (length <= destOffice.getMaxPackageLength()))
+						destOffice != null && (length <= destOffice.getMaxPackageLength())) ||
+						sneak )
 					{
 						srcOffice.accept(pkg);
 					}
 					else if (pkg.getMoney() >= (srcOffice.getRequiredPostage() + srcOffice.getPersuasionAmount()))
 					{
-						Logging.briberyDetected(LogType.MASTER, pkg);
 						srcOffice.accept(pkg);
+						Logging.briberyDetected(LogType.MASTER, pkg);
 					}
 					else
 					{
 						Logging.rejectDeliverable(LogType.MASTER, pkg);
 						Logging.rejectDeliverable(LogType.OFFICE, pkg);
 					}
+
+					sneak = false; //reset sneak flag
+
 				} else if (isBuildCommand(cmd)) {
 					Office newOffice = new Office(tokens[1], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]),
 							Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6]));
@@ -266,15 +276,14 @@ public class RunCommand {
 
 					Logging.officeBuilt(LogType.MASTER, newOffice.getName());
 					Logging.officeBuilt(LogType.OFFICE, newOffice.getName());
+
 				} else if (isScienceCommand(cmd)) {
 
 				} else if (isGoodCommand(cmd)) {
 
 				} else if (isNsaDelayCommand(cmd)) {
-					//do this now
 					String delayedRecipient = tokens[1];
 					int daysDelayed = Integer.parseInt(tokens[2]);
-
 					if (!network.delayDeliverable(delayedRecipient, daysDelayed)) {
 						//check unpicked deliverables if delay on network fail
 						for (Office o : existingOfficeSet) {
@@ -282,7 +291,7 @@ public class RunCommand {
 						}
 					}
 				} else if (isSneakCommand(cmd)) {
-
+					sneak = true;
 				} else if (isInflationCommand(cmd)) {
 					for (Office o : existingOfficeSet) {
 						o.inflation();

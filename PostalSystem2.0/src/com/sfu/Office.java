@@ -99,11 +99,6 @@ public class Office {
 		toMail.add(d);
 	}
 
-	//Receive deliverable without logging
-	public void acceptWithoutLogging(Deliverable d) {
-		toMail.add(d);
-	}
-
 	//Receive from network
 	public void receiveFromNetwork(Deliverable d) {
 		if (d instanceof Package) {
