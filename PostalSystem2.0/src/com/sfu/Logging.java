@@ -20,7 +20,6 @@ public class Logging {
 		String baseDir = System.getProperty("user.dir");
 		masterWriter = new PrintWriter(baseDir + "\\output\\log_master.txt", "UTF-8");
 		frontWriter = new PrintWriter(baseDir + "\\output\\log_front.txt", "UTF-8");
-
 		for (Office o : offices) {
 			PrintWriter writer = new PrintWriter(baseDir + "\\output\\log_" + o.getName() + ".txt", "UTF-8");
 			officeWriterMap.put(o.getName(), writer);

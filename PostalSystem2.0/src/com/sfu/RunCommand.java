@@ -1,8 +1,6 @@
 package com.sfu;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 import com.sfu.Logging.LogType;
@@ -33,14 +31,13 @@ public class RunCommand {
 		List<String> lines = new ArrayList<>();
 		File file = new File(path);
 		FileReader fileReader = new FileReader(file);
-
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		String line;
 		int index = 0;
 		while ((line = bufferedReader.readLine()) != null) {
 			if (index == 0) {
 				count = Integer.parseInt(line);
-			} else if (/*line != null &&*/ line.length() != 0) {
+			} else if (line.length() != 0) {
 				lines.add(line);
 			}
 			index ++;
@@ -53,14 +50,14 @@ public class RunCommand {
 		return lines;
 	}
 
-	private static void initInputFilePaths() throws Exception {
+	private static void initInputFilePaths() {
 		String baseDir = System.getProperty("user.dir");
 		commandsFilePath = baseDir + "\\commands.txt";
 		officesFilePath = baseDir + "\\offices.txt";
 		wantedFilePath = baseDir + "\\wanted.txt";
 	}
 
-	private static void initOffices() throws Exception {
+	private static void initOfficeSet() throws Exception {
 		List<String> lines = readFileIntoLines(officesFilePath);
 		for (String line : lines) {
 			String[] tokens = line.split(" ");
@@ -72,27 +69,27 @@ public class RunCommand {
 		}
 	}
 
-	private static void initWanted() throws Exception {
+	private static void initCriminalSet() throws Exception {
 		List<String> lines = readFileIntoLines(wantedFilePath);
 		for (String line : lines) {
 			criminalSet.add(line.trim());
 		}
 	}
 
-	private static void initOutputDir() {
+	private static void createOutputDir() {
 		//create output dir (if not exists)
 		String baseDir = System.getProperty("user.dir");
 		File f = new File(baseDir + "\\output");
 		if (!f.exists()) {
 			boolean mkdirSuccess = f.mkdir();
 			if(!mkdirSuccess){
-				System.out.println("Failed to create \"output\" directory, exiting program");
+				System.out.println("Failed to create \"output\" directory!");
 				System.exit(1);
 			}
 		}
 	}
 
-	public static void init() throws Exception {
+	public static void init() {
 		//initialize system objects
 		existingOfficeSet = new HashSet<>();
 		destroyedOfficeSet = new HashSet<>();
@@ -101,34 +98,68 @@ public class RunCommand {
 
 		//initialize file I/O
 		initInputFilePaths();
-		initOffices();
-		initWanted();
-		initOutputDir();
+		try {
+			initOfficeSet();
+			initCriminalSet();
+		} catch (Exception e) {
+			System.out.println("Fail to initialize offices and/or criminals!");
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		createOutputDir();
 	}
 
-	public static void main(String[] args) throws Exception
+	public static void main(String[] args)
 	{
 		//Initialize Postal System
 		init();
-
-		//List to store commands
-		List<String> cmdList;
 
 		for (Office o : existingOfficeSet) {
 			o.setCriminalSet(criminalSet);
 			o.setNetwork(network);
 		}
-		/*network.populateOffices(existingOfficeSet);*/
-		cmdList = readFileIntoLines(commandsFilePath);
 
-		//Initialize Logging
-		Logging.init(existingOfficeSet);
+		List<String> cmdList = null;
 
+		try {
+			//parse commands file to list of commands
+			cmdList = readFileIntoLines(commandsFilePath);
+		} catch (Exception e) {
+			System.out.println("Fail to read commands!");
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		try {
+			//initialize Logging
+			Logging.init(existingOfficeSet);
+		} catch (FileNotFoundException e) {
+			System.out.println("FileNotFoundException happened!");
+			e.printStackTrace();
+			System.exit(1);
+		} catch (UnsupportedEncodingException e) {
+			throw new AssertionError("UTF-8 not supported");
+		}
+
+		//Run the simulation
+		runSimulation(cmdList);
+
+		//Cleanup Logging
+		Logging.cleanUp();
+	}
+
+	private static void runSimulation(List<String> cmdList) {
 		//map of day to index which points to the start of the day in the cmdList
 		Map<Integer, Integer> dayIndexMap = new HashMap<>();
 
+		//index and day
 		int idx = 0;
 		int day = 1;
+
+		//flags
+		boolean lastPickUpSuccess = false;
+		boolean timeTravelSuccess;
 
 		//each iteration of this loop simulates one day
 		while (idx < cmdList.size())
@@ -136,7 +167,7 @@ public class RunCommand {
 			//update dayIndexMap
 			dayIndexMap.put(day, idx);
 
-			//update delayed unpicked up deliverables which are ready to be pickued up
+			//update delayed unpicked up deliverables which are ready to be picked up
 			for(Office o : existingOfficeSet) {
 				o.updatePickUpAvailability(day);
 			}
@@ -147,8 +178,7 @@ public class RunCommand {
 			//flags
 			boolean sneak = false;
 			boolean good = false;
-			boolean lastPickUpSuccess = false;
-			boolean timeTravelSuccess = false;
+			timeTravelSuccess = false;
 
 			//a loop than run all iterations in one day
 			for (int i=idx; i<cmdList.size(); i++)
@@ -296,9 +326,17 @@ public class RunCommand {
 						}
 						//add to existing office set
 						existingOfficeSet.add(newOffice);
-						//log office built
-						Logging.officeBuilt(LogType.MASTER, newOffice.getName());
-						Logging.officeBuilt(LogType.OFFICE, newOffice.getName());
+						//try log office built
+						try {
+							Logging.officeBuilt(LogType.MASTER, newOffice.getName());
+							Logging.officeBuilt(LogType.OFFICE, newOffice.getName());
+						} catch (FileNotFoundException e) {
+							System.out.println("FileNotFoundException happened!");
+							e.printStackTrace();
+							System.exit(1);
+						} catch (UnsupportedEncodingException e) {
+							throw new AssertionError("UTF-8 not supported");
+						}
 
 					} else if (isScienceCommand(cmd)) {
 						int targetDay = day + Integer.parseInt(tokens[1]);
@@ -355,32 +393,12 @@ public class RunCommand {
 			}
 		}
 
-		//Cleanup Logging
-		Logging.cleanUp();
-
 		//debug stuffz
 		for(Map.Entry<Integer, Integer> entry : dayIndexMap.entrySet()) {
 			System.out.println("<" + entry.getKey() + ", " + entry.getValue() + ">");
 		}
 		System.out.println("cmdList.size() == " + cmdList.size());
 	}
-
-	/*private static boolean hasPendingDeliverables() {
-		//Checks if in network, there are any deliverables.
-		//Checks if in offices, if there are any deliverables.
-		boolean hasPendingDeliverables = false;
-		if (!network.isNetworkEmpty()) {
-			hasPendingDeliverables = true;
-		}
-		if (!hasPendingDeliverables) {
-			for (Office o : existingOfficeSet) {
-				if (!o.isEmpty()) {
-					hasPendingDeliverables = true;
-				}
-			}
-		}
-		return hasPendingDeliverables;
-	}*/
 
 	//checker functions
 	public static boolean isDestroyedOffice(Office office) {

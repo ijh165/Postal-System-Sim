@@ -1,10 +1,7 @@
 package com.sfu;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import com.sfu.Logging.LogType;
 
@@ -63,12 +60,6 @@ public class Network {
 		}
 		return success;
 	}
-
-	/*public void populateOffices(Set<Office> offices) {
-		for (Office o : offices) {
-			officeMap.put(o.getName(), o);
-		}
-	}*/
 
 	public boolean isNetworkEmpty() {
 		return deliverablesInTransit.size() == 0;

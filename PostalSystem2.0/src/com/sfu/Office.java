@@ -81,18 +81,6 @@ public class Office {
 		this.network = network;
 	}
 
-	/*public void acceptLetterIfGood(Letter letter) {
-		boolean hasCriminalRecipient = criminalSet.contains(letter.getRecipient());
-		boolean officeFull = isFull();
-		Office destOffice = letter.getDestOffice();
-		if (destOffice != null && !hasCriminalRecipient && !officeFull) {
-			accept(letter);
-		} else {
-			Logging.rejectDeliverable(LogType.MASTER, letter);
-			Logging.rejectDeliverable(LogType.OFFICE, letter);
-		}
-	}*/
-
 	//Receive deliverable
 	public void accept(Deliverable d) {
 		Logging.deliverableAccepted(LogType.OFFICE, d);
