@@ -3,6 +3,7 @@ package com.sfu;
 public class Package extends Deliverable {
 	int money;
 	int length;
+
 	public int getMoney() {
 		return money;
 	}
@@ -15,6 +16,4 @@ public class Package extends Deliverable {
 	public void setLength(int length) {
 		this.length = length;
 	}
-
-
 }

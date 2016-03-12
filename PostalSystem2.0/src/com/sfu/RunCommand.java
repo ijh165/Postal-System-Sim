@@ -3,10 +3,7 @@ package com.sfu;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.sfu.Logging.LogType;
 
@@ -43,7 +40,7 @@ public class RunCommand {
 		while ((line = bufferedReader.readLine()) != null) {
 			if (index == 0) {
 				count = Integer.parseInt(line);
-			} else if (line != null && line.length() != 0) {
+			} else if (/*line != null &&*/ line.length() != 0) {
 				lines.add(line);
 			}
 			index ++;
@@ -115,26 +112,30 @@ public class RunCommand {
 		init();
 
 		//List to store commands
-		List<String> commands;
+		List<String> cmdList;
 
 		for (Office o : existingOfficeSet) {
 			o.setCriminalSet(criminalSet);
 			o.setNetwork(network);
 		}
 		/*network.populateOffices(existingOfficeSet);*/
-		commands = readFileIntoLines(commandsFilePath);
+		cmdList = readFileIntoLines(commandsFilePath);
 
 		//Initialize Logging
 		Logging.init(existingOfficeSet);
 
+		//map of day to index which points to the start of the day in the cmdList
+		Map<Integer, Integer> dayIndexMap = new HashMap<>();
+
 		int idx = 0;
 		int day = 1;
 
-		/*boolean hasPendingDeliverables = hasPendingDeliverables();*/
-
-		//RUN SIMULATION LOOP
-		while (idx < commands.size() /*|| hasPendingDeliverables*/)
+		//each iteration of this loop simulates one day
+		while (idx < cmdList.size())
 		{
+			//update dayIndexMap
+			dayIndexMap.put(day, idx);
+
 			//update delayed unpicked up deliverables which are ready to be pickued up
 			for(Office o : existingOfficeSet) {
 				o.updatePickUpAvailability(day);
@@ -147,11 +148,12 @@ public class RunCommand {
 			boolean sneak = false;
 			boolean good = false;
 			boolean lastPickUpSuccess = false;
+			boolean timeTravelSuccess = false;
 
-			//Loop that runs for one day
-			for (int i=idx; i<commands.size(); i++)
+			//a loop than run all iterations in one day
+			for (int i=idx; i<cmdList.size(); i++)
 			{
-				String cmd = commands.get(i);
+				String cmd = cmdList.get(i);
 
 				//1 word cmd
 				if (isDayCommand(cmd)) {
@@ -299,7 +301,13 @@ public class RunCommand {
 						Logging.officeBuilt(LogType.OFFICE, newOffice.getName());
 
 					} else if (isScienceCommand(cmd)) {
-
+						int targetDay = day + Integer.parseInt(tokens[1]);
+						//attempting time travel
+						if (dayIndexMap.get(targetDay) >= 0 && dayIndexMap.get(targetDay) < cmdList.size()) {
+							idx = dayIndexMap.get(targetDay);
+							timeTravelSuccess = true;
+							break;
+						}
 					} else if (isNsaDelayCommand(cmd)) {
 						String delayedRecipient = tokens[1];
 						int daysDelayed = Integer.parseInt(tokens[2]);
@@ -323,34 +331,41 @@ public class RunCommand {
 				}
 			}
 
-			//End of the day.
-			for (Office o : existingOfficeSet) {
-				// Remove deliverables longer than 14 days
-				o.dropUnpickedUp(day);
-				// Send accepted deliverables
-				o.sendToNetwork();
-			}
+			//do not change the state of the system if time travel successful
+			if (!timeTravelSuccess) {
+				//End of the day.
+				for (Office o : existingOfficeSet) {
+					// Remove deliverables longer than 14 days
+					o.dropUnpickedUp(day);
+					// Send accepted deliverables
+					o.sendToNetwork();
+				}
 
-			//Log end of day.
-			Logging.endOfDay(LogType.MASTER, day, null);
-			for (Office o : existingOfficeSet) {
-				Logging.endOfDay(LogType.OFFICE, day, o.getName());
-			}
-			for (Office o : destroyedOfficeSet) {
-				Logging.endOfDay(LogType.OFFICE, day, o.getName());
-			}
+				//Log end of day.
+				Logging.endOfDay(LogType.MASTER, day, null);
+				for (Office o : existingOfficeSet) {
+					Logging.endOfDay(LogType.OFFICE, day, o.getName());
+				}
+				for (Office o : destroyedOfficeSet) {
+					Logging.endOfDay(LogType.OFFICE, day, o.getName());
+				}
 
-			/*hasPendingDeliverables = hasPendingDeliverables();*/
-
-			//Ready for next day
-			day++;
+				//Ready for next day
+				day++;
+			}
 		}
 
 		//Cleanup Logging
 		Logging.cleanUp();
+
+		//debug stuffz
+		for(Map.Entry<Integer, Integer> entry : dayIndexMap.entrySet()) {
+			System.out.println("<" + entry.getKey() + ", " + entry.getValue() + ">");
+		}
+		System.out.println("cmdList.size() == " + cmdList.size());
 	}
 
-	private static boolean hasPendingDeliverables() {
+	/*private static boolean hasPendingDeliverables() {
 		//Checks if in network, there are any deliverables.
 		//Checks if in offices, if there are any deliverables.
 		boolean hasPendingDeliverables = false;
@@ -365,13 +380,12 @@ public class RunCommand {
 			}
 		}
 		return hasPendingDeliverables;
-	}
+	}*/
 
+	//checker functions
 	public static boolean isDestroyedOffice(Office office) {
 		return destroyedOfficeSet.contains(office);
 	}
-
-	//command check functions
 	private static boolean isDayCommand(String command) {
 		return command.startsWith("DAY");
 	}

@@ -21,7 +21,7 @@
     <favorites_list name="PostalSystem2.0" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -38,6 +38,7 @@
         <option value="$PROJECT_DIR$/src/com/sfu/Network.java" />
         <option value="$PROJECT_DIR$/src/com/sfu/Office.java" />
         <option value="$PROJECT_DIR$/commands.txt" />
+        <option value="$PROJECT_DIR$/src/com/sfu/Package.java" />
         <option value="$PROJECT_DIR$/src/com/sfu/RunCommand.java" />
       </list>
     </option>
@@ -73,8 +74,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -112,6 +113,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PostalSystem2.0" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PostalSystem2.0" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="output" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -120,11 +135,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\IvanJonathan\Documents\GitHub\Postal-System-Sim-2.0\PostalSystem2.0\src" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\IvanJonathan\Documents\GitHub\Postal-System-Sim-2.0\PostalSystem2.0" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\IvanJonathan\Documents\GitHub\Postal-System-Sim-2.0\PostalSystem2.0\src" />
     </key>
   </component>
   <component name="RunManager" selected="Application.RunCommand">
@@ -506,28 +521,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11542#11543#0" expanded="true" />
-            <element signature="e#11581#11582#0" expanded="true" />
-            <element signature="e#11637#11638#0" expanded="true" />
-            <element signature="e#11677#11678#0" expanded="true" />
-            <element signature="e#11735#11736#0" expanded="true" />
-            <element signature="e#11777#11778#0" expanded="true" />
-            <element signature="e#11835#11836#0" expanded="true" />
-            <element signature="e#11877#11878#0" expanded="true" />
-            <element signature="e#11936#11937#0" expanded="true" />
-            <element signature="e#11979#11980#0" expanded="true" />
-            <element signature="e#12036#12037#0" expanded="true" />
-            <element signature="e#12077#12078#0" expanded="true" />
-            <element signature="e#12136#12137#0" expanded="true" />
-            <element signature="e#12179#12180#0" expanded="true" />
-            <element signature="e#12239#12240#0" expanded="true" />
-            <element signature="e#12283#12284#0" expanded="true" />
-            <element signature="e#12340#12341#0" expanded="true" />
-            <element signature="e#12381#12382#0" expanded="true" />
-            <element signature="e#12442#12443#0" expanded="true" />
-            <element signature="e#12487#12488#0" expanded="true" />
-            <element signature="e#12548#12549#0" expanded="true" />
-            <element signature="e#12593#12594#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -540,52 +533,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sfu/Letter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05610561">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sfu/Logging.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6419142">
-          <caret line="61" column="9" selection-start-line="61" selection-start-column="9" selection-end-line="61" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sfu/Network.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.39768976">
-          <caret line="21" column="54" selection-start-line="21" selection-start-column="54" selection-end-line="21" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sfu/Deliverable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30858085">
-          <caret line="11" column="47" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
-          <folding>
-            <element signature="e#1251#1252#0" expanded="true" />
-            <element signature="e#1302#1303#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sfu/Office.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7227724">
-          <caret line="93" column="7" selection-start-line="93" selection-start-column="7" selection-end-line="93" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/output/log_Burnaby.txt">
+    <entry file="file://$PROJECT_DIR$/output/log_front.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -593,7 +541,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/output/log_front.txt">
+    <entry file="file://$PROJECT_DIR$/offices.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -609,7 +557,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/output/log_Vancouver.txt">
+    <entry file="file://$PROJECT_DIR$/output/log_Burnaby.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -617,34 +565,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sfu/RunCommand.java">
+    <entry file="file://$PROJECT_DIR$/output/log_Vancouver.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.087458745">
-          <caret line="145" column="19" selection-start-line="145" selection-start-column="19" selection-end-line="145" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.71947193">
+          <caret line="57" column="19" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commands.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.028052805">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sfu/Package.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09259259">
+          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sfu/Office.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8518519">
+          <caret line="248" column="5" selection-start-line="248" selection-start-column="5" selection-end-line="248" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11542#11543#0" expanded="true" />
-            <element signature="e#11581#11582#0" expanded="true" />
-            <element signature="e#11637#11638#0" expanded="true" />
-            <element signature="e#11677#11678#0" expanded="true" />
-            <element signature="e#11735#11736#0" expanded="true" />
-            <element signature="e#11777#11778#0" expanded="true" />
-            <element signature="e#11835#11836#0" expanded="true" />
-            <element signature="e#11877#11878#0" expanded="true" />
-            <element signature="e#11936#11937#0" expanded="true" />
-            <element signature="e#11979#11980#0" expanded="true" />
-            <element signature="e#12036#12037#0" expanded="true" />
-            <element signature="e#12077#12078#0" expanded="true" />
-            <element signature="e#12136#12137#0" expanded="true" />
-            <element signature="e#12179#12180#0" expanded="true" />
-            <element signature="e#12239#12240#0" expanded="true" />
-            <element signature="e#12283#12284#0" expanded="true" />
-            <element signature="e#12340#12341#0" expanded="true" />
-            <element signature="e#12381#12382#0" expanded="true" />
-            <element signature="e#12442#12443#0" expanded="true" />
-            <element signature="e#12487#12488#0" expanded="true" />
-            <element signature="e#12548#12549#0" expanded="true" />
-            <element signature="e#12593#12594#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sfu/Network.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7037037">
+          <caret line="46" column="53" selection-start-line="46" selection-start-column="53" selection-end-line="46" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sfu/Logging.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.6111112">
+          <caret line="93" column="74" selection-start-line="93" selection-start-column="74" selection-end-line="93" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sfu/Letter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.037037037">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sfu/Deliverable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.018518519">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sfu/RunCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7788671">
+          <caret line="355" column="9" selection-start-line="355" selection-start-column="9" selection-end-line="355" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
