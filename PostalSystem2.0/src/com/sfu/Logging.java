@@ -18,10 +18,10 @@ public class Logging {
 
 	public static void init(Set<Office> offices) throws FileNotFoundException, UnsupportedEncodingException {
 		String baseDir = System.getProperty("user.dir");
-		masterWriter = new PrintWriter(baseDir + "\\output\\log_master.txt", "UTF-8");
-		frontWriter = new PrintWriter(baseDir + "\\output\\log_front.txt", "UTF-8");
+		masterWriter = new PrintWriter(baseDir + "\\Output\\log_master.txt", "UTF-8");
+		frontWriter = new PrintWriter(baseDir + "\\Output\\log_front.txt", "UTF-8");
 		for (Office o : offices) {
-			PrintWriter writer = new PrintWriter(baseDir + "\\output\\log_" + o.getName() + ".txt", "UTF-8");
+			PrintWriter writer = new PrintWriter(baseDir + "\\Output\\log_" + o.getName() + ".txt", "UTF-8");
 			officeWriterMap.put(o.getName(), writer);
 		}
 	}
@@ -154,7 +154,7 @@ public class Logging {
 		PrintWriter w = getWriter(type, officeName);
 		if (w == null) {
 			String baseDir = System.getProperty("user.dir");
-			PrintWriter writer = new PrintWriter(baseDir + "\\output\\log_" + officeName + ".txt", "UTF-8");
+			PrintWriter writer = new PrintWriter(baseDir + "\\Output\\log_" + officeName + ".txt", "UTF-8");
 			officeWriterMap.put(officeName, writer);
 			w = writer;
 		}

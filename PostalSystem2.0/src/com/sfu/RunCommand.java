@@ -79,11 +79,11 @@ public class RunCommand {
 	private static void createOutputDir() {
 		//create output dir (if not exists)
 		String baseDir = System.getProperty("user.dir");
-		File f = new File(baseDir + "\\output");
+		File f = new File(baseDir + "\\Output");
 		if (!f.exists()) {
 			boolean mkdirSuccess = f.mkdir();
 			if(!mkdirSuccess){
-				System.out.println("Failed to create \"output\" directory!");
+				System.out.println("Failed to create \"Output\" directory!");
 				System.exit(1);
 			}
 		}
@@ -156,11 +156,6 @@ public class RunCommand {
 				day++;
 				dayIndexMap.put(day,idx+1);
 			}
-		}
-
-		//debug stuffz
-		for(Map.Entry<Integer, Integer> entry : dayIndexMap.entrySet()) {
-			System.out.println("<" + entry.getKey() + ", " + entry.getValue() + ">");
 		}
 
 		return dayIndexMap;
