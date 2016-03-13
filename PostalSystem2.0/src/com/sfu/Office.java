@@ -162,8 +162,9 @@ public class Office {
 		}
 	}
 
-	//Pickup a deliverable, return the deliverable upon success and null upon failure
-	public Deliverable pickUp(String recipient, int day) {
+	//Pickup a deliverable, return list of picked up deliverables (which is empty if pickup fails)
+	public List<Deliverable> pickUp(String recipient, int day) {
+		List<Deliverable> pickedUpDeliverableList = new ArrayList<>();
 		int size = toPickUp.size();
 		for (int idx = size-1 ; idx >= 0 ; idx--) {
 			Deliverable d = toPickUp.get(idx);
@@ -171,10 +172,10 @@ public class Office {
 				d.resetDaysDelayed();
 				toPickUp.remove(idx);
 				Logging.itemComplete(LogType.OFFICE, d, day);
-				return d;
+				pickedUpDeliverableList.add(d);
 			}
 		}
-		return null;
+		return pickedUpDeliverableList;
 	}
 
 	//delay deliverable with the specified recipient and days delayed, return true upon success

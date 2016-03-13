@@ -209,17 +209,20 @@ public class RunCommand {
 						} else {
 							Office office = getExistingOffice(dest);
 							if (office != null) {
-								Deliverable d = office.pickUp(recipient, day);
+								List<Deliverable> pickedUpDeliverableList = office.pickUp(recipient, day);
 								//toggle lastPickupSuccess flag
-								lastPickUpSuccess = (d != null);
-								//destroy office if letter sent by criminal picked up
-								if (d instanceof Letter) {
-									Letter l = (Letter) d;
-									if (criminalSet.contains(l.getReturnRecipient())) {
-										existingOfficeSet.remove(office);
-										destroyedOfficeSet.add(office);
-										Logging.officeDestroyed(LogType.MASTER, office.getName());
-										Logging.officeDestroyed(LogType.OFFICE, office.getName());
+								lastPickUpSuccess = (!pickedUpDeliverableList.isEmpty());
+								//destroy office if any letter sent by criminal picked up
+								for (Deliverable d : pickedUpDeliverableList) {
+									if (d instanceof Letter) {
+										Letter l = (Letter) d;
+										if (criminalSet.contains(l.getReturnRecipient())) {
+											existingOfficeSet.remove(office);
+											destroyedOfficeSet.add(office);
+											Logging.officeDestroyed(LogType.MASTER, office.getName());
+											Logging.officeDestroyed(LogType.OFFICE, office.getName());
+											break;
+										}
 									}
 								}
 							}
@@ -287,15 +290,20 @@ public class RunCommand {
 							boolean lengthFitSrc = (length <= srcOffice.getMaxPackageLength());
 							boolean postageCovered = pkg.getMoney() >= srcOffice.getRequiredPostage();
 							if ((!hasCriminalRecipient && !officeFull &&
-									postageCovered && lengthFitSrc &&
-									destOffice != null && (length <= destOffice.getMaxPackageLength()))
-									||
-									sneak) {
+								postageCovered && lengthFitSrc &&
+								destOffice != null && (length <= destOffice.getMaxPackageLength()))
+								||
+								sneak)
+							{
 								srcOffice.accept(pkg);
-							} else if (pkg.getMoney() >= (srcOffice.getRequiredPostage() + srcOffice.getPersuasionAmount())) {
+							}
+							else if (pkg.getMoney() >= srcOffice.getRequiredPostage()+srcOffice.getPersuasionAmount())
+							{
 								srcOffice.accept(pkg);
 								Logging.briberyDetected(LogType.MASTER, pkg);
-							} else {
+							}
+							else
+							{
 								Logging.rejectDeliverable(LogType.MASTER, pkg);
 								Logging.rejectDeliverable(LogType.OFFICE, pkg);
 							}
