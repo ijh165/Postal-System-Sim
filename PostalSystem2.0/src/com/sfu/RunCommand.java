@@ -110,8 +110,7 @@ public class RunCommand {
 		createOutputDir();
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		//Initialize Postal System
 		init();
 
@@ -143,42 +142,59 @@ public class RunCommand {
 		}
 
 		//Run the simulation
-		runSimulation(cmdList);
+		runCommands(cmdList);
 
 		//Cleanup Logging
 		Logging.cleanUp();
 	}
 
-	private static void runSimulation(List<String> cmdList) {
-		//map of day to index which points to the start of the day in the cmdList
+	private static Map<Integer, Integer> extractDayIndexes(List<String> cmdList) {
 		Map<Integer, Integer> dayIndexMap = new HashMap<>();
+		dayIndexMap.put(1,0);
+		for(int day=1, idx=0; idx<cmdList.size(); idx++) {
+			if(isDayCommand(cmdList.get(idx)) && idx!=cmdList.size()-1) {
+				day++;
+				dayIndexMap.put(day,idx+1);
+			}
+		}
+
+		//debug stuffz
+		for(Map.Entry<Integer, Integer> entry : dayIndexMap.entrySet()) {
+			System.out.println("<" + entry.getKey() + ", " + entry.getValue() + ">");
+		}
+
+		return dayIndexMap;
+	}
+
+	private static void runCommands(List<String> cmdList) {
+		//map of day to index which points to the start of the day in the cmdList (use dayKey not day)
+		Map<Integer, Integer> dayIndexMap = extractDayIndexes(cmdList);
 
 		//index and day
 		int idx = 0;
 		int day = 1;
+		int dayKey = 1;
 
 		//flags
+		boolean sneak = false;
 		boolean lastPickUpSuccess = false;
-		boolean timeTravelSuccess;
 
 		//each iteration of this loop simulates one day
 		while (idx < cmdList.size())
 		{
-			//update dayIndexMap
-			dayIndexMap.put(day, idx);
-
-			//update delayed unpicked up deliverables which are ready to be picked up
-			for(Office o : existingOfficeSet) {
-				o.updatePickUpAvailability(day);
-			}
-
-			//check for any transit items have arrived
-			network.checkAndDeliver(day);
-
 			//flags
-			boolean sneak = false;
 			boolean good = false;
-			timeTravelSuccess = false;
+			boolean timeTravelSuccess = false;
+
+			if (!timeTravelSuccess) {
+				//update delayed unpicked up deliverables which are ready to be picked up
+				for (Office o : existingOfficeSet) {
+					o.updatePickUpAvailability(day);
+				}
+
+				//check for any transit items have arrived
+				network.checkAndDeliver(day);
+			}
 
 			//a loop than run all iterations in one day
 			for (int i=idx; i<cmdList.size(); i++)
@@ -211,7 +227,7 @@ public class RunCommand {
 							if (office != null) {
 								List<Deliverable> pickedUpDeliverableList = office.pickUp(recipient, day);
 								//toggle lastPickupSuccess flag
-								lastPickUpSuccess = (!pickedUpDeliverableList.isEmpty());
+								lastPickUpSuccess = !pickedUpDeliverableList.isEmpty();
 								//destroy office if any letter sent by criminal picked up
 								for (Deliverable d : pickedUpDeliverableList) {
 									if (d instanceof Letter) {
@@ -347,13 +363,34 @@ public class RunCommand {
 						}
 
 					} else if (isScienceCommand(cmd)) {
-						int targetDay = day + Integer.parseInt(tokens[1]);
 						//attempting time travel
-						if (dayIndexMap.get(targetDay) >= 0 && dayIndexMap.get(targetDay) < cmdList.size()) {
-							idx = dayIndexMap.get(targetDay);
+						int targetDayKey = dayKey + Integer.parseInt(tokens[1]);
+						if (dayIndexMap.get(targetDayKey) != null) {
+							dayKey = targetDayKey;
+							idx = dayIndexMap.get(targetDayKey);
 							timeTravelSuccess = true;
 							break;
+						} else {
+							//destroy all letters awaiting pickup
+							for (Office o : existingOfficeSet) {
+								o.destroyLettersAwaitingPickup();
+							}
+							//destroy all packages awaiting pickup
+							for (Office o : existingOfficeSet) {
+								o.destroyPackagesAwaitingPickup();
+							}
+							//destroy all offices
+							for (Office o : existingOfficeSet) {
+								destroyedOfficeSet.add(o);
+								Logging.officeDestroyed(LogType.MASTER, o.getName());
+								Logging.officeDestroyed(LogType.OFFICE, o.getName());
+							}
+							existingOfficeSet.clear();
+							//end the simulation (aka terminate program)
+							Logging.cleanUp();
+							System.exit(0);
 						}
+
 					} else if (isNsaDelayCommand(cmd)) {
 						String delayedRecipient = tokens[1];
 						int daysDelayed = Integer.parseInt(tokens[2]);
@@ -398,14 +435,9 @@ public class RunCommand {
 
 				//Ready for next day
 				day++;
+				dayKey++;
 			}
 		}
-
-		//debug stuffz
-		for(Map.Entry<Integer, Integer> entry : dayIndexMap.entrySet()) {
-			System.out.println("<" + entry.getKey() + ", " + entry.getValue() + ">");
-		}
-		System.out.println("cmdList.size() == " + cmdList.size());
 	}
 
 	//checker functions

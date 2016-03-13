@@ -219,6 +219,30 @@ public class Office {
 		persuasionAmount = (persuasionAmount-decrAmount)>0 ? (persuasionAmount-decrAmount):0;
 	}
 
+	//destroy all letters awaiting pickup
+	public void destroyLettersAwaitingPickup() {
+		for (int idx = toPickUp.size()-1; idx >= 0; idx--) {
+			Deliverable d = toPickUp.get(idx);
+			if (d instanceof Letter) {
+				toPickUp.remove(idx);
+				Logging.deliverableDestroyed(LogType.MASTER, d);
+				Logging.deliverableDestroyed(LogType.OFFICE, d);
+			}
+		}
+	}
+
+	//destroy all packages awaiting pickup
+	public void destroyPackagesAwaitingPickup() {
+		for (int idx = toPickUp.size()-1; idx >= 0; idx--) {
+			Deliverable d = toPickUp.get(idx);
+			if (d instanceof Package) {
+				toPickUp.remove(idx);
+				Logging.deliverableDestroyed(LogType.MASTER, d);
+				Logging.deliverableDestroyed(LogType.OFFICE, d);
+			}
+		}
+	}
+
 	public boolean isFull() {
 		return (this.toMail.size() + this.toPickUp.size()) >= capacity;
 	}
