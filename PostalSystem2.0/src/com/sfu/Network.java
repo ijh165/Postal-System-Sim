@@ -40,10 +40,10 @@ public class Network {
 				} else {
 					//make deliverable available for pickup
 					d.setAvailableForPickUp(true);
-					//put the deliverable into destination office
-					destOffice.receiveFromNetwork(d);
 					//log arriving deliverable
 					Logging.transitArrived(LogType.OFFICE, d);
+					//put the deliverable into destination office
+					destOffice.receiveFromNetwork(d);
 				}
 			}
 		}
