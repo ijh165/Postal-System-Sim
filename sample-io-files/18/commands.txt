@@ -1,15 +1,6 @@
-14
-LETTER Vancouver Bill Burnaby Tom
-PACKAGE Vancouver Simon Burnaby 500 3500
-DAY
-NSADELAY Bill 1
-PICKUP Burnaby Bill
-DAY
-NSADELAY Simon 1
-PICKUP Burnaby Bill
-PICKUP Burnaby Simon
-DAY
-PICKUP Burnaby Bill
-PICKUP Burnaby Simon
-DAY
+5
+LETTER Vancouver Tom Burnaby Bill
+SNEAK
+PACKAGE Vancouver Simon Beijing 500 4000
+PACKAGE Vancouver Simon Burnaby 500 4000
 DAY

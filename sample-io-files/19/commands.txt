@@ -1,6 +1,13 @@
-5
+12
 LETTER Vancouver Tom Burnaby Bill
-SNEAK
-PACKAGE Vancouver Simon Beijing 500 4000
-PACKAGE Vancouver Simon Burnaby 500 4000
+DAY
+PICKUP Burnaby Tom
+GOOD
+LETTER Vancouver Tom Burnaby Bill
+DAY
+PICKUP Burnaby Tom
+GOOD
+LETTER Vancouver Tom Burnaby Bill
+DAY
+DAY
 DAY
