@@ -1,5 +1,5 @@
 # Postal-System-Sim
-This program simulates the global postal system through a series of file I/O. This program reads 3 input files in the "input" folder and generates an "output" folder containing several log files (number of log files generated depends on "offices.txt"). This is a slightly modified version of CMPT213 assignment 2.
+CMPT213 assignment 2 and assignment 4.This program simulates the global postal system through a series of file I/O. This program reads 3 input files in the "input" folder and generates an "output" folder containing several log files (number of log files generated depends on "offices.txt").
 
 # Input Files
 - These files are located in the "input" folder and the program will search these files in that folder
