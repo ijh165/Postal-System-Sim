@@ -1,0 +1,14 @@
+13
+LETTER Vancouver Bill Burnaby Tim
+PACKAGE Vancouver Tim Burnaby 1000 500
+DAY
+PICKUP Burnaby Tim
+DAY
+PICKUP Burnaby Tim
+DAY
+DAY
+PICKUP Burnaby Apple
+PICKUP Burnaby Bill
+PICKUP Burnaby Bill
+PICKUP Burnaby Bill
+DAY

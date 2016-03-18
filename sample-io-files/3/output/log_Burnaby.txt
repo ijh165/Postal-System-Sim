@@ -1,0 +1,21 @@
+- New PACKAGE -
+Source: Burnaby
+Destination: Beijing
+- Rejected PACKAGE -
+Source: Burnaby
+- New PACKAGE -
+Source: Burnaby
+Destination: Vancouver
+- Rejected PACKAGE -
+Source: Burnaby
+- New PACKAGE -
+Source: Burnaby
+Destination: Vancouver
+- Rejected PACKAGE -
+Source: Burnaby
+- New PACKAGE -
+Source: Burnaby
+Destination: Vancouver
+- Rejected PACKAGE -
+Source: Burnaby
+- - DAY 1 OVER - -

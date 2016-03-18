@@ -1,0 +1,8 @@
+7
+PACKAGE Burnaby Tim Vancouver 100 1000
+DAY
+LETTER Burnaby Tim Vancouver Tom
+DAY
+DAY
+DAY
+DAY

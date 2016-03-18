@@ -1,0 +1,10 @@
+9
+LETTER Vancouver Simon Beijing Bill
+PACKAGE Burnaby Simon Beijing 500 500
+LETTER Vancouver Apple Burnaby Bill
+PACKAGE Burnaby Pear Vancouver 500 500
+PACKAGE Burnaby Simon Vancouver 5 500
+PACKAGE Burnaby Bill Vancouver 500 6000
+PACKAGE Vancouver Simon Paris 500 3500
+PACKAGE Paris Bill Burnaby 500 2500
+DAY

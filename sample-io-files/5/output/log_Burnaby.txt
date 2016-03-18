@@ -1,0 +1,12 @@
+- New PACKAGE -
+Source: Burnaby
+Destination: Vancouver
+- Accepted PACKAGE -
+Destination: Vancouver
+- Standard transit departure -
+- - DAY 1 OVER - -
+- - DAY 2 OVER - -
+- Standard transit arrival -
+- - DAY 3 OVER - -
+- - DAY 4 OVER - -
+- - DAY 5 OVER - -

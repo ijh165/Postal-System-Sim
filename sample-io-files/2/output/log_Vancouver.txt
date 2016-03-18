@@ -1,0 +1,12 @@
+- New PACKAGE -
+Source: Vancouver
+Destination: Burnaby
+- Accepted PACKAGE -
+Destination: Burnaby
+- Standard transit departure -
+- - DAY 1 OVER - -
+- - DAY 2 OVER - -
+- Standard transit arrival -
+- Delivery process complete -
+Delivery took 3 days.
+- - DAY 3 OVER - -
