@@ -1,4 +1,4 @@
-package com.sfu;
+package com.ijh165.postalsystem;
 
 public class Package extends Deliverable {
 	int money;

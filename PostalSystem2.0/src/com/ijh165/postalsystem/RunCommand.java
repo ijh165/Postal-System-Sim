@@ -1,9 +1,7 @@
-package com.sfu;
+package com.ijh165.postalsystem;
 
 import java.io.*;
 import java.util.*;
-
-import com.sfu.Logging.LogType;
 
 public class RunCommand {
 	//system objects
@@ -204,7 +202,7 @@ public class RunCommand {
 				if (isGoodCommand(cmd)) {
 					if (lastPickUpSuccess) {
 						good = true;
-						Logging.goodDay(LogType.MASTER, null);
+						Logging.goodDay(Logging.LogType.MASTER, null);
 					}
 				}
 
@@ -216,7 +214,7 @@ public class RunCommand {
 						String dest = tokens[1];
 						String recipient = tokens[2].trim();
 						if (criminalSet.contains(recipient)) {
-							Logging.criminalApprehended(LogType.FRONT, recipient, dest);
+							Logging.criminalApprehended(Logging.LogType.FRONT, recipient, dest);
 						} else {
 							Office office = getExistingOffice(dest);
 							if (office != null) {
@@ -230,8 +228,8 @@ public class RunCommand {
 										if (criminalSet.contains(l.getReturnRecipient())) {
 											existingOfficeSet.remove(office);
 											destroyedOfficeSet.add(office);
-											Logging.officeDestroyed(LogType.MASTER, office.getName());
-											Logging.officeDestroyed(LogType.OFFICE, office.getName());
+											Logging.officeDestroyed(Logging.LogType.MASTER, office.getName());
+											Logging.officeDestroyed(Logging.LogType.OFFICE, office.getName());
 											break;
 										}
 									}
@@ -258,15 +256,15 @@ public class RunCommand {
 						//cmd fails if srcOffice is null (prevent null pointer exception)
 						if (srcOffice != null) {
 							//log new deliverable
-							Logging.newDeliverable(LogType.OFFICE, letter);
+							Logging.newDeliverable(Logging.LogType.OFFICE, letter);
 							//accept/reject deliverable (and log them)
 							boolean hasCriminalRecipient = criminalSet.contains(letter.getRecipient());
 							boolean officeFull = srcOffice.isFull();
 							if ((destOffice != null && !hasCriminalRecipient && !officeFull) || sneak) {
 								srcOffice.accept(letter);
 							} else {
-								Logging.rejectDeliverable(LogType.MASTER, letter);
-								Logging.rejectDeliverable(LogType.OFFICE, letter);
+								Logging.rejectDeliverable(Logging.LogType.MASTER, letter);
+								Logging.rejectDeliverable(Logging.LogType.OFFICE, letter);
 							}
 						}
 						//reset sneak flag
@@ -294,7 +292,7 @@ public class RunCommand {
 						//cmd fails if srcOffice is null (prevent null pointer exception)
 						if (srcOffice != null) {
 							//log new deliverable
-							Logging.newDeliverable(LogType.OFFICE, pkg);
+							Logging.newDeliverable(Logging.LogType.OFFICE, pkg);
 							//accept/reject deliverable (and log them)
 							boolean hasCriminalRecipient = criminalSet.contains(pkg.getRecipient());
 							boolean officeFull = srcOffice.isFull();
@@ -311,12 +309,12 @@ public class RunCommand {
 							else if (pkg.getMoney() >= srcOffice.getRequiredPostage()+srcOffice.getPersuasionAmount())
 							{
 								srcOffice.accept(pkg);
-								Logging.briberyDetected(LogType.MASTER, pkg);
+								Logging.briberyDetected(Logging.LogType.MASTER, pkg);
 							}
 							else
 							{
-								Logging.rejectDeliverable(LogType.MASTER, pkg);
-								Logging.rejectDeliverable(LogType.OFFICE, pkg);
+								Logging.rejectDeliverable(Logging.LogType.MASTER, pkg);
+								Logging.rejectDeliverable(Logging.LogType.OFFICE, pkg);
 							}
 						}
 						//reset sneak flag
@@ -331,8 +329,8 @@ public class RunCommand {
 							if (o.getName().equals(newOffice.getName())) {
 								existingOfficeSet.remove(o);
 								destroyedOfficeSet.add(o);
-								Logging.officeDestroyed(LogType.MASTER, o.getName());
-								Logging.officeDestroyed(LogType.OFFICE, o.getName());
+								Logging.officeDestroyed(Logging.LogType.MASTER, o.getName());
+								Logging.officeDestroyed(Logging.LogType.OFFICE, o.getName());
 								break;
 							}
 						}
@@ -347,8 +345,8 @@ public class RunCommand {
 						existingOfficeSet.add(newOffice);
 						//try log office built
 						try {
-							Logging.officeBuilt(LogType.MASTER, newOffice.getName());
-							Logging.officeBuilt(LogType.OFFICE, newOffice.getName());
+							Logging.officeBuilt(Logging.LogType.MASTER, newOffice.getName());
+							Logging.officeBuilt(Logging.LogType.OFFICE, newOffice.getName());
 						} catch (FileNotFoundException e) {
 							System.out.println("FileNotFoundException happened!");
 							e.printStackTrace();
@@ -377,8 +375,8 @@ public class RunCommand {
 							//destroy all offices
 							for (Office o : existingOfficeSet) {
 								destroyedOfficeSet.add(o);
-								Logging.officeDestroyed(LogType.MASTER, o.getName());
-								Logging.officeDestroyed(LogType.OFFICE, o.getName());
+								Logging.officeDestroyed(Logging.LogType.MASTER, o.getName());
+								Logging.officeDestroyed(Logging.LogType.OFFICE, o.getName());
 							}
 							existingOfficeSet.clear();
 							//end the simulation (aka terminate program)
@@ -420,12 +418,12 @@ public class RunCommand {
 				}
 
 				//Log end of day.
-				Logging.endOfDay(LogType.MASTER, day, null);
+				Logging.endOfDay(Logging.LogType.MASTER, day, null);
 				for (Office o : existingOfficeSet) {
-					Logging.endOfDay(LogType.OFFICE, day, o.getName());
+					Logging.endOfDay(Logging.LogType.OFFICE, day, o.getName());
 				}
 				for (Office o : destroyedOfficeSet) {
-					Logging.endOfDay(LogType.OFFICE, day, o.getName());
+					Logging.endOfDay(Logging.LogType.OFFICE, day, o.getName());
 				}
 
 				//Ready for next day

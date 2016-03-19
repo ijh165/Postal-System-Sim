@@ -1,10 +1,11 @@
-package com.sfu;
+package com.ijh165.postalsystem;
 
+import java.lang.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.sfu.Logging.LogType;
+import com.ijh165.postalsystem.Logging.LogType;
 
 public class Office {
 	private String name;

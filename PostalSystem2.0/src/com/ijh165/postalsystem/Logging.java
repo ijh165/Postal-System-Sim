@@ -1,4 +1,4 @@
-package com.sfu;
+package com.ijh165.postalsystem;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

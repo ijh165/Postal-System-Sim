@@ -1,9 +1,7 @@
-package com.sfu;
+package com.ijh165.postalsystem;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.sfu.Logging.LogType;
 
 public class Network {
 	private List<Deliverable> deliverablesInTransit = new ArrayList<>();
@@ -41,7 +39,7 @@ public class Network {
 					//make deliverable available for pickup
 					d.setAvailableForPickUp(true);
 					//log arriving deliverable
-					Logging.transitArrived(LogType.OFFICE, d);
+					Logging.transitArrived(Logging.LogType.OFFICE, d);
 					//put the deliverable into destination office
 					destOffice.receiveFromNetwork(d);
 				}
