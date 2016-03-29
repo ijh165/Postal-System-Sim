@@ -2,12 +2,15 @@ package com.ijh165.postalsystem.frontend;
 
 import com.ijh165.postalsystem.backend.PostalSystemBackend;
 import com.ijh165.postalsystem.util.CmdTypeStr;
+import com.ijh165.postalsystem.util.Logging;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -118,7 +121,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         saveButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Postal System Sim Input File(s) Generator");
+        setTitle("Postal System Simulation");
 
         pageTitle.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         pageTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -130,9 +133,9 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         northPanelLayout.setHorizontalGroup(
             northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, northPanelLayout.createSequentialGroup()
-                .addContainerGap(147, Short.MAX_VALUE)
+                .addContainerGap(166, Short.MAX_VALUE)
                 .addComponent(pageTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 779, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
         northPanelLayout.setVerticalGroup(
             northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,7 +156,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
             southPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, southPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(copyrightLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 1061, Short.MAX_VALUE)
+                .addComponent(copyrightLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 1100, Short.MAX_VALUE)
                 .addContainerGap())
         );
         southPanelLayout.setVerticalGroup(
@@ -174,7 +177,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         );
         eastPanelLayout.setVerticalGroup(
             eastPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 608, Short.MAX_VALUE)
+            .addGap(0, 607, Short.MAX_VALUE)
         );
 
         getContentPane().add(eastPanel, java.awt.BorderLayout.LINE_END);
@@ -187,7 +190,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         );
         westPanelLayout.setVerticalGroup(
             westPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 608, Short.MAX_VALUE)
+            .addGap(0, 607, Short.MAX_VALUE)
         );
 
         getContentPane().add(westPanel, java.awt.BorderLayout.LINE_START);
@@ -285,7 +288,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         mainMenuWantedFileButtonLayout.setHorizontalGroup(
             mainMenuWantedFileButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(createWantedFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(editWantedFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 783, Short.MAX_VALUE)
+            .addComponent(editWantedFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 796, Short.MAX_VALUE)
         );
         mainMenuWantedFileButtonLayout.setVerticalGroup(
             mainMenuWantedFileButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,9 +299,9 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 .addComponent(editWantedFileButton))
         );
 
-        runSimulationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "simulation execution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 1, 14))); // NOI18N
+        runSimulationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Simulation Execution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("sansserif", 1, 14))); // NOI18N
 
-        runSimulationButton.setFont(new java.awt.Font("sansserif", 0, 20)); // NOI18N
+        runSimulationButton.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
         runSimulationButton.setText("Run Simulation");
         runSimulationButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -306,9 +309,9 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
             }
         });
 
-        inputDirPathLabel.setText("Input Directory:");
+        inputDirPathLabel.setText("Input Directory Path:");
 
-        outputDirPathLabel.setText("Output Directory:");
+        outputDirPathLabel.setText("Output Directory Path:");
 
         inputDirPathBrowseButton.setText("Browse");
         inputDirPathBrowseButton.addActionListener(new java.awt.event.ActionListener() {
@@ -329,9 +332,9 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         runSimulationPanelLayout.setHorizontalGroup(
             runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, runSimulationPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addGroup(runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(runSimulationButton, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
+                    .addComponent(runSimulationButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(runSimulationPanelLayout.createSequentialGroup()
                         .addGroup(runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(inputDirPathLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -339,26 +342,30 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(inputDirPathTextField)
-                            .addComponent(outputDirPathTextField))
+                            .addComponent(outputDirPathTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(outputDirPathBrowseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(inputDirPathBrowseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
         runSimulationPanelLayout.setVerticalGroup(
             runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(runSimulationPanelLayout.createSequentialGroup()
-                .addGroup(runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(inputDirPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputDirPathLabel)
-                    .addComponent(inputDirPathBrowseButton))
-                .addGroup(runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(outputDirPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(outputDirPathLabel)
-                    .addComponent(outputDirPathBrowseButton))
-                .addGap(0, 0, 0)
-                .addComponent(runSimulationButton, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))
+                .addGroup(runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(inputDirPathBrowseButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, runSimulationPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(inputDirPathLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(inputDirPathTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(runSimulationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(outputDirPathLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(outputDirPathTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(outputDirPathBrowseButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(runSimulationButton, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout mainMenuPageLayout = new javax.swing.GroupLayout(mainMenuPage);
@@ -366,18 +373,18 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         mainMenuPageLayout.setHorizontalGroup(
             mainMenuPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainMenuPageLayout.createSequentialGroup()
-                .addContainerGap(81, Short.MAX_VALUE)
+                .addContainerGap(94, Short.MAX_VALUE)
                 .addGroup(mainMenuPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(runSimulationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mainMenuWantedFileButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mainMenuCmdFileButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(mainMenuOfficeFileButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
         mainMenuPageLayout.setVerticalGroup(
             mainMenuPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainMenuPageLayout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(mainMenuCmdFileButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(mainMenuOfficeFileButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -385,7 +392,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 .addComponent(mainMenuWantedFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(runSimulationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mainPanel.add(mainMenuPage, "Main Menu Page");
@@ -428,7 +435,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         addModifyDeleteButtonPanel.setLayout(addModifyDeleteButtonPanelLayout);
         addModifyDeleteButtonPanelLayout.setHorizontalGroup(
             addModifyDeleteButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+            .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
             .addComponent(modifyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -465,7 +472,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         movementButtonPanelLayout.setHorizontalGroup(
             movementButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(moveUpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(moveDownButton, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+            .addComponent(moveDownButton, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
         );
         movementButtonPanelLayout.setVerticalGroup(
             movementButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -515,7 +522,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
             fileEditorPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fileEditorPageLayout.createSequentialGroup()
                 .addGroup(fileEditorPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fileContentScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
+                    .addComponent(fileContentScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
                     .addGroup(fileEditorPageLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(filenameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -551,7 +558,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                         .addGap(0, 0, 0)
                         .addComponent(saveCancelButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(fileContentScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)))
+                    .addComponent(fileContentScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)))
         );
 
         mainPanel.add(fileEditorPage, "File Editor Page");
@@ -871,11 +878,10 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 expectedFilename = "wanted.txt";
                 errorMessage = "The wanted criminals file must be of the name \"wanted.txt\"!";
                 break;
-        }
-        //validate variables (for debugging)
-        if (expectedFilename==null || errorMessage==null) {
-            System.out.println("something wrong with save button action");
-            return;
+            default:
+                //invalid
+                System.out.println("something wrong with save button action");
+                return;
         }
         //create file chooser gui
         final String finalExpectedFilename = expectedFilename, finalErrorMessage = errorMessage;
@@ -923,7 +929,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
             //show message dialog to inform user
             JOptionPane.showMessageDialog(this, 
                                           "\"" + expectedFilename + "\" saved in the following directory:\n" + 
-                                          "<html><font color=red>"+fc.getCurrentDirectory().getAbsolutePath() + "</font></html>\n",
+                                          "<html><font color=red>" + fc.getCurrentDirectory().getAbsolutePath() + "</font></html>\n",
                                           "Save Successful.",
                                           JOptionPane.INFORMATION_MESSAGE);
         }
@@ -1164,16 +1170,54 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
     }//GEN-LAST:event_editWantedFileButtonActionPerformed
 
     private void runSimulationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runSimulationButtonActionPerformed
+        //fetch input and out dir paths
         String inputDirPath = inputDirPathTextField.getText();
         String outputDirPath = outputDirPathTextField.getText();
+        //if user doesn't fill them in
         if(inputDirPath.length()==0 || outputDirPath.length()==0) {
             JOptionPane.showMessageDialog(this,
-                                          "Please fill in both fields to run simulation",
-                                          "Fail to run simulation",
+                                          "Please fill in both " +
+                                          "\"" + inputDirPathLabel.getText().substring(0, inputDirPathLabel.getText().length()-1) + "\" and " +
+                                          "\"" + outputDirPathLabel.getText().substring(0, outputDirPathLabel.getText().length()-1) + "\" " +
+                                          "fields to run the simulation",
+                                          "Fail to run simulation!",
                                           JOptionPane.ERROR_MESSAGE);
             return;
         }
-        PostalSystemBackend.runSimulation(inputDirPath, outputDirPath);
+        //try running the simulation
+        try {
+            PostalSystemBackend.runSimulation(inputDirPath, outputDirPath);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this,
+                                          "Input file(s) not found!\n"+
+                                          "Please make sure the files \"commands.txt\", \"offices.txt\", and \"wanted.txt\" " + 
+                                          "are in the following input directory:\n" + 
+                                          "<html><font color=red>" + inputDirPathTextField.getText() + "</font></html>",
+                                          "Fail to run simulation!",
+                                          JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (UnsupportedEncodingException e) {
+            JOptionPane.showMessageDialog(this,
+                                          "UTF-8 encoding not supported!",
+                                          "Fail to run simulation!",
+                                          JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                                          e.getMessage(),
+                                          "Fail to run simulation!",
+                                          JOptionPane.ERROR_MESSAGE);
+            return;
+        } finally {
+            Logging.cleanUp();
+        }
+        
+        JOptionPane.showMessageDialog(this,
+                                          "Execution Successful.\n" +
+                                          "Output files are created in the following directory:\n" +
+                                          "<html><font color=red>" + outputDirPathTextField.getText() + "</font></html>",
+                                          "Simulation Success!",
+                                          JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_runSimulationButtonActionPerformed
 
     private void inputDirPathBrowseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputDirPathBrowseButtonActionPerformed
@@ -1182,11 +1226,10 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         fc.setPreferredSize(new Dimension(800,600));
         fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fc.setDialogTitle("Select Input Directory");
-        fc.setFileFilter(new FileNameExtensionFilter("Text File (*.txt)", "txt"));
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         //show dialog
         if (fc.showOpenDialog(this)==JFileChooser.APPROVE_OPTION) {
-            inputDirPathTextField.setText(fc.getCurrentDirectory().getAbsolutePath());
+            inputDirPathTextField.setText(fc.getSelectedFile().getAbsolutePath());
         }
     }//GEN-LAST:event_inputDirPathBrowseButtonActionPerformed
 
@@ -1195,19 +1238,17 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
         //setup file chooser dialog
         fc.setPreferredSize(new Dimension(800,600));
         fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        fc.setDialogTitle("Select Input Directory");
-        fc.setFileFilter(new FileNameExtensionFilter("Text File (*.txt)", "txt"));
+        fc.setDialogTitle("Select Output Directory");
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         //show dialog
         if (fc.showOpenDialog(this)==JFileChooser.APPROVE_OPTION) {
-            outputDirPathTextField.setText(fc.getCurrentDirectory().getAbsolutePath());
+            outputDirPathTextField.setText(fc.getSelectedFile().getAbsolutePath());
         }
     }//GEN-LAST:event_outputDirPathBrowseButtonActionPerformed
     
     //swap two elements in the fileContentList at the specified indices
     private void swapFileContentListElements(int index1, int index2) {
         DefaultListModel model = (DefaultListModel) fileContentList.getModel();
-        if(model==null) {System.out.println("oh shit");}
         String tmp = (String) model.get(index1);
         model.set(index1, model.get(index2));
         model.set(index2, tmp);
@@ -1228,7 +1269,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 //init lastDir
                 lastDir = null;
                 //print page (for debugging)
-                System.out.println("MAIN_MENU_PAGE");
+                //System.out.println("MAIN_MENU_PAGE");
                 break;
             case CREATE_CMD_FILE_PAGE:
                 //appearance...
@@ -1236,7 +1277,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 pageTitle.setText("Creating Command File");
                 filenameLabel.setText("commands.txt");
                 //print page (for debugging)
-                System.out.println("CREATE_CMD_FILE_PAGE");
+                //System.out.println("CREATE_CMD_FILE_PAGE");
                 break;
             case EDIT_CMD_FILE_PAGE:
                 //appearance...
@@ -1244,7 +1285,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 pageTitle.setText("Editing Command File");
                 filenameLabel.setText( (lastDir!=null?lastDir:System.getProperty("user.dir")) + "\\commands.txt" );
                 //print page (for debugging)
-                System.out.println("EDIT_CMD_FILE_PAGE");
+                //System.out.println("EDIT_CMD_FILE_PAGE");
                 break;
             case CREATE_OFFICE_FILE_PAGE:
                 //appearance...
@@ -1252,7 +1293,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 pageTitle.setText("Creating Post Office File");
                 filenameLabel.setText("offices.txt");
                 //print page (for debugging)
-                System.out.println("CREATE_OFFICE_FILE_PAGE");
+                //System.out.println("CREATE_OFFICE_FILE_PAGE");
                 break;
             case EDIT_OFFICE_FILE_PAGE:
                 //appearance...
@@ -1260,7 +1301,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 pageTitle.setText("Editing Post Office File");
                 filenameLabel.setText( (lastDir!=null?lastDir:System.getProperty("user.dir")) + "\\offices.txt" );
                 //print page (for debugging)
-                System.out.println("EDIT_OFFICE_FILE_PAGE");
+                //System.out.println("EDIT_OFFICE_FILE_PAGE");
                 break;
             case CREATE_WANTED_FILE_PAGE:
                 //appearance...
@@ -1268,7 +1309,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 pageTitle.setText("Creating Wanted Criminals File");
                 filenameLabel.setText("wanted.txt");
                 //print page (for debugging)
-                System.out.println("CREATE_WANTED_FILE_PAGE");
+                //System.out.println("CREATE_WANTED_FILE_PAGE");
                 break;
             case EDIT_WANTED_FILE_PAGE:
                 //appearance...
@@ -1276,7 +1317,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 pageTitle.setText("Editing Wanted Criminals File");
                 filenameLabel.setText( (lastDir!=null?lastDir:System.getProperty("user.dir")) + "\\wanted.txt" );
                 //print page (for debugging)
-                System.out.println("EDIT_WANTED_FILE_PAGE");
+                //System.out.println("EDIT_WANTED_FILE_PAGE");
                 break;
         }
         //determine saving page enum to pageStack
