@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="officeNameLabel" max="32767" attributes="0"/>
+                  <Component id="capacityLabel" alignment="0" max="32767" attributes="0"/>
+                  <Component id="requiredPostageLabel" pref="148" max="32767" attributes="0"/>
+                  <Component id="transitTimeLabel" alignment="0" max="32767" attributes="0"/>
+                  <Component id="persuasionAmountLabel" pref="148" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="transitTimeTextField" alignment="1" max="32767" attributes="0"/>
+                  <Component id="requiredPostageTextField" alignment="1" max="32767" attributes="0"/>
+                  <Component id="capacityTextField" alignment="1" max="32767" attributes="0"/>
+                  <Component id="persuasionAmountTextField" max="32767" attributes="0"/>
+                  <Component id="officeNameTextField" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="730" max="32767" attributes="0"/>
+              <Component id="confirmButton" min="-2" pref="88" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cancelButton" min="-2" pref="88" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="maxPackageLengthLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="maxPackageLengthTextField" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="officeNameTextField" alignment="0" max="32767" attributes="0"/>
+                  <Component id="officeNameLabel" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="transitTimeLabel" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="transitTimeTextField" alignment="3" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="requiredPostageLabel" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="requiredPostageTextField" alignment="3" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="capacityLabel" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="capacityTextField" alignment="3" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="persuasionAmountLabel" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="persuasionAmountTextField" alignment="3" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="maxPackageLengthLabel" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="maxPackageLengthTextField" alignment="3" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="cancelButton" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Component id="confirmButton" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JButton" name="confirmButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Confirm"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="confirmButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="cancelButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cancel"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="officeNameLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Post Office Name:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="transitTimeLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Transit Time:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="requiredPostageLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Required Postage:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="capacityLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Capacity:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="persuasionAmountLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Persuasion Amount:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="maxPackageLengthLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Maximum Package Length:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="officeNameTextField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="transitTimeTextField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="requiredPostageTextField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="capacityTextField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="persuasionAmountTextField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="maxPackageLengthTextField">
+    </Component>
+  </SubComponents>
+</Form>
