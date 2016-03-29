@@ -332,9 +332,7 @@ public class PostalSystemBackend {
                             }
                         }
                     } else if (isSneakCommand(cmd)) {
-                        if (idx<cmdList.size()-1) {
-                            sneak = true;
-                        }
+                        sneak = true;
                     } else if (isInflationCommand(cmd)) {
                         for (Office o : existingOfficeSet) {
                             o.inflation();

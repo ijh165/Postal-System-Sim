@@ -1,12 +1,12 @@
-- New LETTER -
+- New letter -
 Source: Burnaby
 Destination: Vancouver
-- Accepted LETTER -
+- Accepted letter -
 Destination: Vancouver
 - Standard transit departure -
 - - DAY 1 OVER - -
 - - DAY 2 OVER - -
 - Standard transit arrival -
 - Delivery process complete -
-Delivery took 3 days.
+Delivery took 3 days
 - - DAY 3 OVER - -

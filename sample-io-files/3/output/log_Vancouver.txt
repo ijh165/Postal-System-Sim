@@ -1,16 +1,16 @@
-- New LETTER -
+- New letter -
 Source: Vancouver
 Destination: Beijing
-- Rejected LETTER -
+- Rejected letter -
 Source: Vancouver
-- New LETTER -
+- New letter -
 Source: Vancouver
 Destination: Burnaby
-- Rejected LETTER -
+- Rejected letter -
 Source: Vancouver
-- New PACKAGE -
+- New package -
 Source: Vancouver
 Destination: Paris
-- Rejected PACKAGE -
+- Rejected package -
 Source: Vancouver
 - - DAY 1 OVER - -

@@ -1,12 +1,12 @@
-- New LETTER -
+- New letter -
 Source: Vancouver
 Destination: Burnaby
-- Accepted LETTER -
+- Accepted letter -
 Destination: Burnaby
-- New PACKAGE -
+- New package -
 Source: Vancouver
 Destination: Burnaby
-- Accepted PACKAGE -
+- Accepted package -
 Destination: Burnaby
 - Standard transit departure -
 - Standard transit departure -
