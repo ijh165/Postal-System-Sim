@@ -1,5 +1,5 @@
 # Postal-System-Sim
-CMPT213 assignment 2 and assignment 4. This program simulates the global postal system through a series of file I/O. This program reads 3 input files and generates an "Output" folder containing several log files. PostalSystem1.0 is the first iteration of the postal system (assignment 2). PostalSystem2.0 is the second iteration of the postal system (assignment 4). PostalSystem3.0 is the third and final iteration of the postal system with the GUI (assignment 5).
+CMPT213 assignment 2, assignment 4, and assignment 5. This program simulates the global postal system through a series of file I/O. This program reads 3 input files and generates an "Output" folder containing several log files. PostalSystem1.0 is the first iteration of the postal system (assignment 2). PostalSystem2.0 is the second iteration of the postal system (assignment 4). PostalSystem3.0 is the third and final iteration of the postal system with the GUI (assignment 5).
 
 # Input Files
 - The program will search for these files in the project base directory
