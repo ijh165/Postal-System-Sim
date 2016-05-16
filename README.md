@@ -1,5 +1,5 @@
 # Postal-System-Sim
-This program simulates the global postal system through a series of file I/O. This program reads 3 input files and generates an "Output" folder containing several log files. PostalSystem1.0 is the first iteration of the postal system. PostalSystem2.0 is the second iteration of the postal system. PostalSystem3.0 is the third and final iteration of the postal system with the GUI.
+This program simulates the global postal system through a series of file I/O. This program reads 3 input files and generates an "Output" folder containing several log files. PostalSystem1.0 is the first iteration of the postal system. PostalSystem2.0 is the second iteration of the postal system. PostalSystem3.0 is the third and final iteration of the postal system with the GUI. PostalSystem1.0 and PostalSystem2.0 are developed in IntelliJ while PostalSystem3.0 is developed in Netbeans.
 
 # Input Files
 - The program will search for these files in the project base directory
