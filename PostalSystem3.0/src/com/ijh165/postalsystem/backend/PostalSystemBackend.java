@@ -56,9 +56,9 @@ public class PostalSystemBackend {
     }
 
     private static void initInputFilePaths(String inputDirPath) {
-        commandsFilePath = inputDirPath + "\\commands.txt";
-        officesFilePath = inputDirPath + "\\offices.txt";
-        wantedFilePath = inputDirPath + "\\wanted.txt";
+        commandsFilePath = inputDirPath + File.separator + "commands.txt";
+        officesFilePath = inputDirPath + File.separator + "offices.txt";
+        wantedFilePath = inputDirPath + File.separator + "wanted.txt";
     }
 
     private static void initOfficeSet() throws Exception {

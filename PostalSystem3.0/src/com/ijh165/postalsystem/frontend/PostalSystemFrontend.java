@@ -1283,7 +1283,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 //appearance...
                 ((CardLayout)mainPanel.getLayout()).show(mainPanel, "File Editor Page");
                 pageTitle.setText("Editing Command File");
-                filenameLabel.setText( (lastDir!=null?lastDir:System.getProperty("user.dir")) + "\\commands.txt" );
+                filenameLabel.setText( (lastDir!=null?lastDir:System.getProperty("user.dir")) + File.separator + "commands.txt" );
                 //print page (for debugging)
                 //System.out.println("EDIT_CMD_FILE_PAGE");
                 break;
@@ -1299,7 +1299,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 //appearance...
                 ((CardLayout)mainPanel.getLayout()).show(mainPanel, "File Editor Page");
                 pageTitle.setText("Editing Post Office File");
-                filenameLabel.setText( (lastDir!=null?lastDir:System.getProperty("user.dir")) + "\\offices.txt" );
+                filenameLabel.setText( (lastDir!=null?lastDir:System.getProperty("user.dir")) + File.separator + "offices.txt" );
                 //print page (for debugging)
                 //System.out.println("EDIT_OFFICE_FILE_PAGE");
                 break;
@@ -1315,7 +1315,7 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                 //appearance...
                 ((CardLayout)mainPanel.getLayout()).show(mainPanel, "File Editor Page");
                 pageTitle.setText("Editing Wanted Criminals File");
-                filenameLabel.setText( (lastDir!=null?lastDir:System.getProperty("user.dir")) + "\\wanted.txt" );
+                filenameLabel.setText( (lastDir!=null?lastDir:System.getProperty("user.dir")) + File.separator + "wanted.txt" );
                 //print page (for debugging)
                 //System.out.println("EDIT_WANTED_FILE_PAGE");
                 break;

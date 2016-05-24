@@ -3,6 +3,7 @@ package com.ijh165.postalsystem.util;
 import com.ijh165.postalsystem.backend.models.Deliverable;
 import com.ijh165.postalsystem.backend.models.Letter;
 import com.ijh165.postalsystem.backend.models.Office;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -19,14 +20,14 @@ public class Logging {
         private static String outputDirPath;
 	private static PrintWriter masterWriter;
 	private static PrintWriter frontWriter;
-	private static final Map<String, PrintWriter> officeWriterMap = new HashMap<>();
+	private static Map<String, PrintWriter> officeWriterMap = new HashMap<>();
 
 	public static void init(Set<Office> offices, String outputDirPathStr) throws FileNotFoundException, UnsupportedEncodingException {
 		outputDirPath = outputDirPathStr;
-                masterWriter = new PrintWriter(outputDirPath + "\\log_master.txt", "UTF-8");
-		frontWriter = new PrintWriter(outputDirPath + "\\log_front.txt", "UTF-8");
+                masterWriter = new PrintWriter(outputDirPath + File.separator + "log_master.txt", "UTF-8");
+		frontWriter = new PrintWriter(outputDirPath + File.separator + "log_front.txt", "UTF-8");
 		for (Office o : offices) {
-			PrintWriter writer = new PrintWriter(outputDirPath + "\\log_" + o.getName() + ".txt", "UTF-8");
+			PrintWriter writer = new PrintWriter(outputDirPath + File.separator + "log_" + o.getName() + ".txt", "UTF-8");
 			officeWriterMap.put(o.getName(), writer);
 		}
 	}
@@ -158,7 +159,7 @@ public class Logging {
 	public static void officeBuilt(LogType type, String officeName) throws FileNotFoundException, UnsupportedEncodingException {
 		PrintWriter w = getWriter(type, officeName);
 		if (w == null) {
-			PrintWriter writer = new PrintWriter(outputDirPath + "\\log_" + officeName + ".txt", "UTF-8");
+			PrintWriter writer = new PrintWriter(outputDirPath + File.separator + "log_" + officeName + ".txt", "UTF-8");
 			officeWriterMap.put(officeName, writer);
 			w = writer;
 		}
