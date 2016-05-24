@@ -1208,9 +1208,9 @@ public class PostalSystemFrontend extends javax.swing.JFrame {
                                           "Fail to run simulation!",
                                           JOptionPane.ERROR_MESSAGE);
             return;
-        } finally {
+        } /*finally {
             Logging.cleanUp();
-        }
+        }*/
         
         JOptionPane.showMessageDialog(this,
                                           "Execution Successful.\n" +
