@@ -149,7 +149,7 @@ This program simulates the global postal system through a series of file I/O. Th
             – An integer specifying the length of the package.
             Example: PACKAGE Paris Pierre Toulouse 200 99999 – A package to be sent in Paris, with the destination being Toulouse and the recipient being Pierre. The package is 99999 units long and has 200 units of currency accompanying it.
             
-	5 Miscellaneous notes
+  4 Miscellaneous notes
 
       1. At program startup the current day is day 1.
       2. Letters don’t require postage, only packages do.
