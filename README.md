@@ -48,7 +48,7 @@ This program simulates the global postal system through a series of file I/O. Th
       5. Disallow attempts to pick up a nonexistent item or an item in transit. Don’t log such attempts.
       6. Disallow attempts to pick up an item twice. Don’t log such attempts.
     1.7 Successful delivery
-      1. Duringapickupattempttherecipientpicksupallitemswiththeirnameatthepostoffice of pickup. Write a item-complete entry to the destination post office log for each such item.
+      1. During a pickup attempt the recipient picks up all items with their name at the post office of pickup. Write a item-complete entry to the destination post office log for each such item.
       
   2 Log entry types
 
